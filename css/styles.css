@@ -841,9 +841,12 @@ p.callout.full, .story p {
 /*  -- */
 
 #floater {
+	font-family: "Shadows Into Light";
+	font-size: 20px;
+	color: #F1E7D0;
 	position:absolute;
 	right:202px;
-	top:20px;
+	top:15px;
 	transition-property: top, bottom;
 	transition-duration: 0.55s;
 	z-index:111;
@@ -853,6 +856,11 @@ p.callout.full, .story p {
 	top:10px;
 }
 
+.floater-arrow {
+	font-family: Arial;
+	position: relative;
+	top: -5px;
+}
 /* Native */
 
 .wp-caption,
