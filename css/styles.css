@@ -1365,6 +1365,10 @@ h3.widgettitle {
 	width:100%;
 }
 
+#featureslides .slides img{
+	opacity: 0.5;
+}
+
 #featureslides .featurecaption {
 	margin:0 auto;
 	width:1024px;
