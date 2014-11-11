@@ -178,9 +178,8 @@ input {
 
 #footer {
 	width:100%;
-	padding:20px 0px 20px 0px;
-	background-color:#FFFAE7;
-	border-bottom:solid 8px #C03118;
+	padding:20px 0px 10px 0px;
+	background-color:#C03118;
 }
 
 #footerpattern {
@@ -208,13 +207,10 @@ input {
 }
 
 #footercontent p {
-	font-size:16px;
-	color:#666;
-}
-
-#footercontent p.copyright {
-	font-size:12px;
-	color:#C3C3C0;
+	font-size: 16px;
+	color: #FFFAE7;
+	text-align: center;
+	text-transform: uppercase;
 }
 
 #footercontent a {
@@ -261,10 +257,11 @@ input {
 }
 
 #header .content h2 {
-	color:#fff;
+	color:#F1E7D0;
 	font-size:30px;
 	text-transform:uppercase;
 	margin-top:100px;
+	margin-bottom:0px;
 }
 
 #header .content h1 {
@@ -447,6 +444,11 @@ a.button, #searchsubmit, #submit {
 .seal {
 	position:absolute;
 	right:-50px;
+	-webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  transform: rotate(15deg);
 }
 
 .dark {
@@ -485,7 +487,7 @@ a.button, #searchsubmit, #submit {
 	margin-top:20px;
 	height:450px;
 	width:60%;
-	border: solid 10px #E2DECC;
+	border: solid 10px #fff;
 	float:left;
 }
 
@@ -840,18 +842,26 @@ p.callout.full, .story p {
 /*  -- */
 
 #floater {
+	font-family: "Shadows Into Light";
+	font-size: 20px;
+	color: #F1E7D0;
 	position:absolute;
 	right:202px;
-	top:20px;
+	top:30px;
 	transition-property: top, bottom;
 	transition-duration: 0.55s;
 	z-index:111;
 }
 
 #floater.down {
-	top:10px;
+	top:20px;
 }
 
+.floater-arrow {
+	font-family: Arial;
+	position: relative;
+	top: -5px;
+}
 /* Native */
 
 .wp-caption,
@@ -1365,6 +1375,10 @@ h3.widgettitle {
 	width:100%;
 }
 
+#featureslides .slides img{
+	opacity: 0.5;
+}
+
 #featureslides .featurecaption {
 	margin:0 auto;
 	width:1024px;
@@ -1437,4 +1451,42 @@ h3.widgettitle {
 
 #featureslides.flexslider {
 	background-color:#2a2a2a;
+}
+
+/*Fontawesome*/
+
+.list-group {
+  margin: 0;
+  padding: 0;
+}
+.list-group-item {
+	padding: 3px 5px;
+	margin-bottom: -1px;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+}
+.list-group-item > .badge {
+  float: right;
+}
+.list-group-item > .badge + .badge {
+  margin-right: 7px;
+}
+a.list-group-item {
+  color: #555555;
+  text-decoration: none;
+}
+a.list-group-item .list-group-item-heading {
+  color: #333333;
+}
+a.list-group-item:hover,
+a.list-group-item:focus {
+  text-decoration: none;
+  color: #555555;
+  background-color: #ffffff;
+}
+
+.team-member{
+	margin-bottom: 20px;
+	border: 1px dashed #ccc;
+	padding: 15px;
 }

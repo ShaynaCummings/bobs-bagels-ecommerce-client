@@ -5,12 +5,12 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1">
 		<title>Bob's Bagels - A test project built with Ruby on Rails and Javascript</title>
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Bree+Serif|Shadows+Into+Light|Kaushan+Script' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/flexslider.css" type="text/css">
 		<link rel="stylesheet" href="css/styles.css" type="text/css">
 		<link rel="stylesheet" href="css/layout.css" type="text/css">
 		<link rel="stylesheet" href="css/demo.css" type="text/css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	</head>
 	<body class="sunfire">
 		<a id="Top"></a>
@@ -21,10 +21,9 @@
 				<ul>
 					<li><a class="ironanchor" href="#Menu">Our Menu</a></li>
 					<li><a class="ironanchor" href="#Specials">Specials</a></li>
-					<li><a class="ironanchor" href="#Locations">Locations</a></li>
+					<li><a class="ironanchor" href="#Locations">Location</a></li>
 					<li><a class="ironanchor" href="#Story">About</a></li>
-					<li><a class="ironanchor" href="#Careers">Careers</a></li>
-					<li><a class="ironanchor" href="#Events">Events</a></li>
+					<li><a class="ironanchor" href="#Developers">Developers</a></li>
 				</ul>
 			</div>
 		</div>
@@ -32,7 +31,7 @@
 			<div class="contentsection" id="header">
 				<div class="content">
 					<div id="floater">
-						<img src="images/floater.png">
+						Hire the developers! <span class="floater-arrow">⤴</span>
 					</div>
 				</div>
 				<div id="featureslides" class="flexslider">
@@ -41,10 +40,10 @@
 							<img src="images/slider-bagel.jpg">
 							<div class="content">
 								<div class="featurecaption">
-									<h2>Try our new</h2>
+									<h2>Try our famous</h2>
 									<h1>delicious bagels!</h1>
-									<p>Freshly made every 4 hours</p>
-									<p><a href="#Menu" class="button"/>View Our Menu &rsaquo;</a></p>
+									<p>Freshly made every four hours</p>
+									<p><a href="#Menu" class="button"/>View Menu &rsaquo;</a></p>
 								</div>
 							</div>
 						</li>
@@ -56,12 +55,17 @@
 				<div class="content">
 					<img src="images/seal.png" class="seal">
 					<h1>Our Menu</h1>
-					<h2>Satisfy your hunger with our extravagant menu!</h2>
+					<h2>Satisfy your hunger with our diverse menu!</h2>
 					<div id="menu">
 						<div class="menusection">
 							<h2>Appetizers <img class="tape" src="images/icon_app.png"></h2>
 							<div class="cols clearfix">
-								<div class="col1">
+								<div class="col1" id="js-product-list">
+
+									<div class="menuitem">
+										<h3>Product Name</h3>
+									</div>
+
 									<div class="menuitem">
 										<h3>Chilli Baked Potato Skins</h3>
 										<p>Nullam consequat, sem vitae rhoncus tristique, mauris nulla fermentum est, bibendum ullamcorper sapien magna et quam.</p>
@@ -234,21 +238,24 @@
 				<div class="content">
 					<div class="left">
 						<h1>Specials</h1>
-						<p class="callout">Our have a full bar that includes one of the largest selections of brews one can imagine.</p><br>
+						<p class="callout">Our Seaport location features a full bar with the very best local brews available</p><br>
 						<div class="special">
 							<h2>Brunch</h2>
-							<p><i>11:00am-3:00pm All Week</i></p>
-							<p>15 bottomless mimosas and Bloody Marys</p>
+							<p><i>11a-3p | All Week</i></p>
+							<p><strong>$15</strong> Bottomless Mimosa or Bloody Mary</p>
 						</div>
 						<div class="special">
 							<h2>Happy Hour</h2>
-							<p><i>5:00pm-7:00pm All Week</i></p>
-							<p>$5 Select Draft Pints & Champagne Cocktails, $6 Featured Sparkling, Red, & White Wines, $7 Sobieski Vodka Martinis, $8 Mojitos, & Discounted Bites, appetizers.</p>
+							<p><i>5p-7p | All Week</i></p>
+							<p><strong>$5</strong> Select draft pints and champagne cocktails </p>
+							<p><strong>$6</strong> Featured sparkling, red, and white wines  </p>
+							<p><strong>$7</strong> Sobieski vodka martinis  </p>
+							<p><strong>$8</strong> Select appetizers </p>
 						</div>
 						<div class="special">
 							<h2>Dinner</h2>
-							<p><i>7:00pm-10:00pm Fridays Only</i></p>
-							<p>Half off select wines and brew. Half off all appetizers.</p>
+							<p><i>7p-10p | Thursdays Only</i></p>
+							<p><strong>Half off</strong> select wines</p>
 						</div>
 					</div>
 					<div id="beer">
@@ -259,24 +266,23 @@
 			<a id="Locations"></a>
 			<div class="contentsection beige">
 				<div class="content">
-					<h1>Locations</h1>
-					<p class="callout">Duis ante mi, laoreet ut, commodo eleifend, cursus nec, lorem.</p>
-					<div class="ironmap" data-lat="26.366649" data-long="-80.082493"></div>
+					<h1>Location</h1>
+					<p class="callout"></p>
+					<div class="ironmap" data-lat="42.349331" data-long="-71.050008"></div>
 					<div id="maplocations">
-						<div class="locationitem clearfix" data-lat="26.711574" data-long="-80.036144">
-							<h3>Palm Beach</h3>
-							<p>This is located on the ocean front in Palm Beach Florida. Easily the best in town.</p>
-							<p class="telephone"><a href="#" class="button">(305)555-3294</a></p>
+						<div class="locationitem clearfix" data-lat="42.349331" data-long="-71.050008">
+							<h3>Melcher Street</h3>
+							<p>Located in the historic Seaport District of Boston, Bob's Bagels provides a beautiful view of the Fort Point Channel.</p>
+							<p class="telephone"><a href="#" class="button">(617) 555-1234</a></p>
 						</div>
-						<div class="locationitem clearfix" data-lat="25.794945" data-long="-80.224972">
-							<h3>Miami</h3>
-							<p>Enjoy the city of Miami's Best burgers!</p>
-							<p class="telephone"><a href="#" class="button">(305)555-3294</a></p>
-						</div>
-						<div class="locationitem clearfix" data-lat="26.366649" data-long="-80.082493">
-							<h3>Boca Raton</h3>
-							<p>Visit our Boca Raton location today! Call for your reservation.</p>
-							<p class="telephone"><a href="#" class="button">(305)555-3294</a></p>
+						<div class="locationitem clearfix">
+							<h3>Delivery Zones</h3>
+
+							<p><strong>$6</strong> | Boston: Downtown, Southie, North End, South End</p>
+							<p><strong>$10</strong> | Brookline, Allston, Cambridge, Somerville</p>
+							<p><i>Sorry, we are not able to offer delivery to other neighborhoods at this time.</i></p>
+							<p><a href="#" class="button">click to view zones</a></p>
+
 						</div>
 					</div>
 				</div>
@@ -291,121 +297,74 @@
 					<div id="wheel">
 						<img src="images/bagel-plain.png">
 						<img src="images/bagel-poppy.png">
+						<img src="images/bagel-plain.png">
+						<img src="images/bagel-poppy.png">
+						<img src="images/bagel-plain.png">
+						<img src="images/bagel-poppy.png">
 					</div>
 				</div>
 			</div>
-			<a id="Careers"></a>
-			<div class="contentsection gray">
-				<div class="content">
-					<h1>Careers</h1>
-					<p class="callout">Duis ante mi, laoreet ut, commodo eleifend, cursus nec, lorem.</p><br><br>
-					<div class="clearfix">
-						<div class="jobtable">
-							<p class="jobtitle">Servers</p>
-							<p class="job">We need servers who can deliver food to tables efficiently.</p>
-							<ul>
-								<li>2 Positions</li>
-							</ul>
-							<div class="apply">
-								<div class="wbutton">
-									<a href="#">Apply Now</a>
-								</div>
-							</div>
-						</div>
-						<div class="jobtable">
-							<p class="jobtitle">Hosts</p>
-							<p class="job">Join our team of hosts with your welcoming smile and charm.</p>
-							<ul>
-								<li>4 Positions</li>
-							</ul>
-							<div class="apply">
-								<div class="wbutton">
-									<a href="#">Apply Now</a>
-								</div>
-							</div>
-						</div>
-						<div class="jobtable">
-							<p class="jobtitle">Chefs</p>
-							<p class="job">Prepare food with our team of world renown chefs.</p>
-							<ul>
-								<li>2 Positions</li>
-							</ul>
-							<div class="apply">
-								<div class="wbutton">
-									<a href="#">Apply Now</a>
-								</div>
-							</div>
-						</div>
-						<div class="jobtable">
-							<p class="jobtitle">Bartenders</p>
-							<p class="job">Can you make a mean manhattan? Join our team and flex your talent.</p>
-							<ul>
-								<li>5 Positions</li>
-							</ul>
-							<div class="apply">
-								<div class="wbutton">
-									<a href="#">Apply Now</a>
-								</div>
-							</div>
-						</div>
-					</div><br>
-				</div>
-				<div class="falloff">
-					<img src="http://placehold.it/520x346"><img src="http://placehold.it/280x268"><img src="http://placehold.it/520x346">
-				</div>
-			</div>
-			<a id="Events"></a>
-			<div class="contentsection dark" style="background:url(images/placeholder1.jpg) 50% 50px no-repeat;">
-				<div class="content">
-					<div class="stage">
-						<h1>Events</h1>
-						<p class="callout">Tag your instagram photos with hashtag #ironbull to appear in our album! We will look over them and add your picture to our site!</p><br>
-						<div id="contentright">
-							<div id="slideshow" class="flexslider">
-								<ul class="slides">
-									<li><img alt="project" src="http://placehold.it/590x393" class="roid"/>
-										<p class="flex-caption">New Year's Even 2012</p>
-									</li>
-									<li>
-										<img alt="project" src="http://placehold.it/590x393" class="roid"/>
-										<p class="flex-caption">Letting the good times roll.</p>
-									</li>
-									<li>
-										<img alt="project" src="http://placehold.it/590x393" class="roid"/>
-										<p class="flex-caption">Cinco De Mayo 2012</p>
-									</li>
-									<li>
-										<img alt="project" src="http://placehold.it/590x393" class="roid"/>
-										<p class="flex-caption">Random Night</p>
-									</li>
-									<li>
-										<img alt="project" src="http://placehold.it/590x393" class="roid"/>
-										<p class="flex-caption">Buy your Mom a draft night.</p>
-									</li>
-								</ul>
-							</div>
-							<div class="polaroid">
-								<img class="tape" src="images/tapel.png">
-							</div>
+			<a id="Developers"></a>
+			<div class="contentsection beige">
+				<div class="content developers">
+					<h1>Meet The Devs</h1>
+					<p>Efficient and effective, our developers created this entire e-commerce platform in just five days!</p>
+					<p>They used Ruby on Rails as their back-end server, JavaScript and jQuery/AJAX for the front-end client, and the Stripe API for accepting credit cards.</p>
+					<h2>The Team</h2>
+
+					<div class="team-member">
+						<h3> George Banis</h3>
+						<p>George is a full stack developer with a digital marketing background who thrives in entrepreneurial environments and enjoys solving complex problems with code that is efficient and highly testable.</p>
+						<div class="list-group">
+							<a class="list-group-item" target="_blank" href="http://gbanis.com"><i class="fa fa-globe fa-fw"></i>&nbsp;Blog</a>
+						  <a class="list-group-item" target="_blank" href="http://twitter.com/gbanis"><i class="fa fa-twitter fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="http://linkedin.com/in/gbanis"><i class="fa fa-linkedin fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="http://github.com/gbanis"><i class="fa fa-github fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="mailto:gbanis@gmail.com"><i class="fa fa-envelope-o fa-fw"></i></a>
 						</div>
 					</div>
+					<div class="team-member">
+						<h3> Shayna Cummings</h3>
+						<p>Shayna likes coding, coffee, Canada, and cats.</p>
+						<div class="list-group">
+						  <a class="list-group-item" target="_blank" href="http://twitter.com/shaynacummings"><i class="fa fa-twitter fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="http://www.linkedin.com/in/shaynacummings/"><i class="fa fa-linkedin fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="http://github.com/ShaynaCummings"><i class="fa fa-github fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="mailto:shayna.cummings@gmail.com"><i class="fa fa-envelope-o fa-fw"></i></a>
+						</div>
+					</div>
+					<div class="team-member">
+						<h3> Avi Reddy</h3>
+						<p>Avi is a full-stack developer from New York.</p>
+						<div class="list-group">
+						  <a class="list-group-item" target="_blank" href="https://www.linkedin.com/pub/avinash-reddy/a1/236/b1b"><i class="fa fa-linkedin fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="http://github.com/AReddy14"><i class="fa fa-github fa-fw"></i></a>
+						  <a class="list-group-item" target="_blank" href="mailto:areddy1441@gmail.com"><i class="fa fa-envelope-o fa-fw"></i></a>
+						</div>
+					</div>
+
+					<h2>Technologies Used</h2>
+					<ul>
+						<li>Ruby on Rails (as an API Server)</li>
+						<li>JavaScript & jQuery (for the animations and functionality)</li>
+						<li>AJAX (for calls to the Rails server)</li>
+						<li><a href="https://stripe.com/docs/api">Stripe API</a> (for payment processing)</li>
+						<li>Rspec (for Server Testing)</li>
+						<li>Google Maps API</li>
+						<li>HTML5 & CSS3</li>
+						<li>Fontawesome Fonts</li>
+						<li>Google Fonts</li>
+					</ul>
+					<h2>Hosted On</h2>
+					<ul>
+						<li>Back-end (Rails API Server): Heroku</li>
+						<li>Front-end (HTML/CSS/JavaScript/Assets): GitHub Pages</li>
+					</ul>
 				</div>
 			</div>
 			<div id="footer">
 				<div id="footercontent">
-					<div class="clearfix">
-						<div class="content">
-							<p>We hoped you had fun on our interactive site. Now come try our food! &nbsp;&nbsp;&nbsp;<a class="button anchor" href="#Top">Back to Top</a></p>
-						</div>
-						<div id="socialmedia">
-							<ul>
-								<li class="twitter"><a href=""><img src="images/twitter.png"></a></li>
-								<li class="facebook"><a href=""><img src="images/facebook.png"></a></li>
-								<li class="vimeo"><a href=""><img src="images/vimeo.png"></a></li>
-							</ul>
-						</div>
-					</div>
-					<p class="copyright">&copy; Copyright Iron Bull 2013</p>
+					<p class="copyright">Built with <i class="fa fa-heart"></i> in Boston</p>
 				</div>
 			</div>
 		</div>
@@ -414,7 +373,7 @@
 		<script type="text/javascript" src="js/jquery.mousewheel-3.0.4.pack.js"></script>
 		<script src="js/jqueryeasing.js"></script>
 		<script src="js/flexslider.js"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBaXBe4RxtbrU2clirhC4fpzY4E6riZC_Y&amp;sensor=false"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXiTK0eltHjARh5QZxmR8C32XPn20KZds&amp;sensor=false"></script>
 		<script src="js/site.js"></script>
 	</body>
 </html>

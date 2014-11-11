@@ -136,12 +136,33 @@
 		var marker;
 		var map;
 		var mapzoom = "";
+		var styles = [
+		  {
+		    stylers: [
+		      { hue: "#FFFAEF" },
+		      { saturation: -70 }
+		    ]
+		  },{
+		    featureType: "road",
+		    elementType: "geometry",
+		    stylers: [
+		      { lightness: 100 },
+		      { visibility: "simplified" }
+		    ]
+		  },{
+		    featureType: "road",
+		    elementType: "labels",
+		    stylers: [
+		      { visibility: "off" }
+		    ]
+		  }
+		];
 
-		mapzoom = 8;
+		mapzoom = 16
 
 		function initialize() {
 			var mapOptions = {
-				zoom: 8,
+				zoom: 16,
 				scrollwheel: false,
 				mapTypeControl: false,
 				disableDoubleClickZoom: true,
@@ -152,12 +173,26 @@
 			};
 
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
+			map.setOptions({styles: styles});
+
+			var locInfo = '<h1>Bob\'s Bagels</h1>'
+			var infowindow = new google.maps.InfoWindow({
+      	content: locInfo,
+  		});
+
+			var bagelPic = '/images/bagel-map-marker.png'
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
+				icon: bagelPic,
+				title: 'Bob\'s Bagels',
 				animation: google.maps.Animation.DROP,
 				position: new google.maps.LatLng($(".ironmap").data("lat"), $(".ironmap").data("long")),
 			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+    		infowindow.open(map,marker);
+  		});
 
 			$(".locationitem").each(function(){
 				marker = new google.maps.Marker({
@@ -167,6 +202,8 @@
 					position: new google.maps.LatLng($(this).data("lat"), $(this).data("long")),
 				});
 			});
+
+
 		}
 
 		// Custom Scrollspy
@@ -186,7 +223,7 @@
 			var acdifference = Math.round(z-x);
 
 			if (y <= actotal && y >= x - 300) {
-				$('#wheel img').css({'left':y - (actotal - 500),'-webkit-transform':'rotate('+y+'deg)','-moz-transform':'rotate('+y+'deg)','-o-transform':'rotate('+y+'deg)','-ms-transform':'rotate('+y+'deg)','transform':'rotate('+y+'deg)'});
+				$('#wheel img').css({'left':y - (actotal + 200),'-webkit-transform':'rotate('+y+'deg)','-moz-transform':'rotate('+y+'deg)','-o-transform':'rotate('+y+'deg)','-ms-transform':'rotate('+y+'deg)','transform':'rotate('+y+'deg)'});
 			}
 		});
 
