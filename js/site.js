@@ -172,9 +172,15 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
-			var bagelPic = '/images/bagel-map-marker.png'
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
 			map.setOptions({styles: styles});
+
+			var locInfo = '<h1>Bob\'s Bagels</h1>'
+			var infowindow = new google.maps.InfoWindow({
+      	content: locInfo,
+  		});
+
+			var bagelPic = '/images/bagel-map-marker.png'
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
@@ -183,6 +189,10 @@
 				animation: google.maps.Animation.DROP,
 				position: new google.maps.LatLng($(".ironmap").data("lat"), $(".ironmap").data("long")),
 			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+    		infowindow.open(map,marker);
+  		});
 
 			$(".locationitem").each(function(){
 				marker = new google.maps.Marker({
