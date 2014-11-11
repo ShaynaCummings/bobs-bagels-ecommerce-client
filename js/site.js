@@ -6,11 +6,17 @@
   	}).done(function(results) {
     	console.table(results);
 
+    // for(var i = 0, count = results.length; i < count; i++) {
+    		//second loop to get options array
+    // };
+
     for(var i = 0, count = results.length; i < count; i++) {
-    	$('#js-product-list').append('<div>').html('<h3>'
+    	$('#js-product-list').append('<h3>'
     		+ results[i].name
     		+ '</h3><p>'
     		+ results[i].description
+    		+ '</p><p> With: '
+    		+ results[i].options[name]
     		+ '</p><p class="price">'
     		+ results[i].price
     		+ '</p>');
