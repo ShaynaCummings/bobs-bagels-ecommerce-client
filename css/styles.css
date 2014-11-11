@@ -448,6 +448,11 @@ a.button, #searchsubmit, #submit {
 .seal {
 	position:absolute;
 	right:-50px;
+	-webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+  -ms-transform: rotate(15deg);
+  -o-transform: rotate(15deg);
+  transform: rotate(15deg);
 }
 
 .dark {
