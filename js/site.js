@@ -136,6 +136,27 @@
 		var marker;
 		var map;
 		var mapzoom = "";
+		var styles = [
+		  {
+		    stylers: [
+		      { hue: "#FFFAEF" },
+		      { saturation: -70 }
+		    ]
+		  },{
+		    featureType: "road",
+		    elementType: "geometry",
+		    stylers: [
+		      { lightness: 100 },
+		      { visibility: "simplified" }
+		    ]
+		  },{
+		    featureType: "road",
+		    elementType: "labels",
+		    stylers: [
+		      { visibility: "off" }
+		    ]
+		  }
+		];
 
 		mapzoom = 8;
 
@@ -152,6 +173,7 @@
 			};
 
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
+			map.setOptions({styles: styles});
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
@@ -167,6 +189,8 @@
 					position: new google.maps.LatLng($(this).data("lat"), $(this).data("long")),
 				});
 			});
+
+
 		}
 
 		// Custom Scrollspy
