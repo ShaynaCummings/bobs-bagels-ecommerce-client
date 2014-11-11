@@ -1,4 +1,31 @@
 (function($) {
+
+	$.ajax({
+    	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
+    	type: 'GET',
+  	}).done(function(results) {
+    	// console.table(results);
+
+for(var i = 0; i < results.length; i++){
+     // for(var j = 0; j < results[i].length; j++){
+        console.log(results[i].options[1].name);
+     // }
+};
+
+    for(var i = 0, count = results.length; i < count; i++) {
+    	$('#js-product-list').append('<h3>'
+    		+ results[i].name
+    		+ '</h3><p>'
+    		+ results[i].description
+    		+ '</p><p> With: '
+    		+ results[i].options[1].name
+    		+ '</p><p class="price">'
+    		+ results[i].price
+    		+ '</p>');
+    	};
+
+    });
+
 	"use strict";
 	$(function() {
 		$("body").attr("class", $("#allconent").attr('class'));
@@ -158,11 +185,11 @@
 		  }
 		];
 
-		mapzoom = 8;
+		mapzoom = 16
 
 		function initialize() {
 			var mapOptions = {
-				zoom: 8,
+				zoom: 16,
 				scrollwheel: false,
 				mapTypeControl: false,
 				disableDoubleClickZoom: true,
@@ -174,12 +201,25 @@
 
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
 			map.setOptions({styles: styles});
+
+			var locInfo = '<h1>Bob\'s Bagels</h1>'
+			var infowindow = new google.maps.InfoWindow({
+      	content: locInfo,
+  		});
+
+			var bagelPic = '/images/bagel-map-marker.png'
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
+				icon: bagelPic,
+				title: 'Bob\'s Bagels',
 				animation: google.maps.Animation.DROP,
 				position: new google.maps.LatLng($(".ironmap").data("lat"), $(".ironmap").data("long")),
 			});
+
+			google.maps.event.addListener(marker, 'click', function() {
+    		infowindow.open(map,marker);
+  		});
 
 			$(".locationitem").each(function(){
 				marker = new google.maps.Marker({
