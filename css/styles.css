@@ -847,14 +847,14 @@ p.callout.full, .story p {
 	color: #F1E7D0;
 	position:absolute;
 	right:202px;
-	top:15px;
+	top:30px;
 	transition-property: top, bottom;
 	transition-duration: 0.55s;
 	z-index:111;
 }
 
 #floater.down {
-	top:10px;
+	top:20px;
 }
 
 .floater-arrow {
@@ -1451,4 +1451,42 @@ h3.widgettitle {
 
 #featureslides.flexslider {
 	background-color:#2a2a2a;
+}
+
+/*Fontawesome*/
+
+.list-group {
+  margin: 0;
+  padding: 0;
+}
+.list-group-item {
+	padding: 3px 5px;
+	margin-bottom: -1px;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+}
+.list-group-item > .badge {
+  float: right;
+}
+.list-group-item > .badge + .badge {
+  margin-right: 7px;
+}
+a.list-group-item {
+  color: #555555;
+  text-decoration: none;
+}
+a.list-group-item .list-group-item-heading {
+  color: #333333;
+}
+a.list-group-item:hover,
+a.list-group-item:focus {
+  text-decoration: none;
+  color: #555555;
+  background-color: #ffffff;
+}
+
+.team-member{
+	margin-bottom: 20px;
+	border: 1px dashed #ccc;
+	padding: 15px;
 }
