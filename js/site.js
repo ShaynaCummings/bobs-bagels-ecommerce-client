@@ -158,11 +158,11 @@
 		  }
 		];
 
-		mapzoom = 8;
+		mapzoom = 16
 
 		function initialize() {
 			var mapOptions = {
-				zoom: 8,
+				zoom: 16,
 				scrollwheel: false,
 				mapTypeControl: false,
 				disableDoubleClickZoom: true,
