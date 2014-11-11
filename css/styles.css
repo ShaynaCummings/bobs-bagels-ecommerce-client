@@ -208,12 +208,13 @@ input {
 }
 
 #footercontent p {
-	font-size:16px;
-	color:#666;
+	font-size: 16px;
+	color: #C3C3C0;
+	text-align: center;
 }
 
 #footercontent p.copyright {
-	font-size:12px;
+	font-size:16px;
 	color:#C3C3C0;
 }
 
