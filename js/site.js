@@ -4,11 +4,13 @@
     	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
     	type: 'GET',
   	}).done(function(results) {
-    	console.table(results);
+    	// console.table(results);
 
-    // for(var i = 0, count = results.length; i < count; i++) {
-    		//second loop to get options array
-    // };
+for(var i = 0; i < results.length; i++){
+     // for(var j = 0; j < results[i].length; j++){
+        console.log(results[i].options[1].name);
+     // }
+};
 
     for(var i = 0, count = results.length; i < count; i++) {
     	$('#js-product-list').append('<h3>'
@@ -16,7 +18,7 @@
     		+ '</h3><p>'
     		+ results[i].description
     		+ '</p><p> With: '
-    		+ results[i].options[name]
+    		+ results[i].options[1].name
     		+ '</p><p class="price">'
     		+ results[i].price
     		+ '</p>');
