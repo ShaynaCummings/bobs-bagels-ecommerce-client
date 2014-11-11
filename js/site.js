@@ -172,13 +172,14 @@
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
-			var bagelPic = '/images/bagel-plain-small.png'
+			var bagelPic = '/images/bagel-map-marker.png'
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
 			map.setOptions({styles: styles});
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
 				icon: bagelPic,
+				title: 'Bob\'s Bagels',
 				animation: google.maps.Animation.DROP,
 				position: new google.maps.LatLng($(".ironmap").data("lat"), $(".ironmap").data("long")),
 			});
