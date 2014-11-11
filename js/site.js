@@ -1,4 +1,23 @@
 (function($) {
+
+	$.ajax({
+    	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
+    	type: 'GET',
+  	}).done(function(results) {
+    	console.table(results);
+
+    for(var i = 0, count = results.length; i < count; i++) {
+    	$('#js-product-list').append('<div>').html('<h3>'
+    		+ results[i].name
+    		+ '</h3><p>'
+    		+ results[i].description
+    		+ '</p><p class="price">'
+    		+ results[i].price
+    		+ '</p>');
+    	};
+
+    });
+
 	"use strict";
 	$(function() {
 		$("body").attr("class", $("#allconent").attr('class'));
