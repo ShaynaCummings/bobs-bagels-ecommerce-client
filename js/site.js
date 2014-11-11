@@ -186,7 +186,7 @@
 			var acdifference = Math.round(z-x);
 
 			if (y <= actotal && y >= x - 300) {
-				$('#wheel img').css({'left':y - (actotal - 500),'-webkit-transform':'rotate('+y+'deg)','-moz-transform':'rotate('+y+'deg)','-o-transform':'rotate('+y+'deg)','-ms-transform':'rotate('+y+'deg)','transform':'rotate('+y+'deg)'});
+				$('#wheel img').css({'left':y - (actotal + 200),'-webkit-transform':'rotate('+y+'deg)','-moz-transform':'rotate('+y+'deg)','-o-transform':'rotate('+y+'deg)','-ms-transform':'rotate('+y+'deg)','transform':'rotate('+y+'deg)'});
 			}
 		});
 
