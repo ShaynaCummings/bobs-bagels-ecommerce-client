@@ -1,32 +1,32 @@
-var sampleOrder = {
-  lineitems:[
+// var sampleOrder = {
+//   lineitems:[
 
-    {
-      lineitem: {
-        product_id: 4,
-        combined_price: 6
-      },
-      lineitem_options: [14, 2, 7, 15]
-    },
+//     {
+//       lineitem: {
+//         product_id: 4,
+//         combined_price: 6
+//       },
+//       lineitem_options: [14, 2, 7, 15]
+//     },
 
-    {
-      lineitem: {
-        product_id: 10,
-        combined_price: 3.5
-      },
-      lineitem_options: [45]
-    }
-  ],
-  order_info:{
-    status: 'pending',
-    street_address: '50 Melcher Street',
-    city: 'Boston',
-    state: 'MA',
-    zip_code: '02210',
-    delivery_price: 6,
-    order_total: 15.5
-  }
-};
+//     {
+//       lineitem: {
+//         product_id: 10,
+//         combined_price: 3.5
+//       },
+//       lineitem_options: [45]
+//     }
+//   ],
+//   order_info:{
+//     status: 'pending',
+//     street_address: '50 Melcher Street',
+//     city: 'Boston',
+//     state: 'MA',
+//     zip_code: '02210',
+//     delivery_price: 6,
+//     order_total: 15.5
+//   }
+// };
 
 var cart = {
 	lineitems: [],
@@ -52,12 +52,39 @@ function addToCart(e){
         combined_price: combinedPrice
       },
       lineitem_options: optionIdsArray
-	})
 
-	console.table(cart);
+	})
+}
+
+function placeOrder(e){
+	e.preventDefault();
+
+	cart.order_info = {
+    status: 'pending',
+    street_address: '50 Melcher Street',
+    city: 'Boston',
+    state: 'MA',
+    zip_code: '02210',
+    delivery_price: 6,
+    order_total: 15.5
+  }
+
+  $.ajax({
+	  type: 'post',
+	  url: "https://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  dataType: "json",
+	  data: cart
+	})
+  .done(function(data){
+  	alert("Thank you! Your order was placed.");
+  });
 }
 
 (function($) {
+
+	// TEMPORARY PLACE ORDER TEST BUTTON
+	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").prependTo('.content #menu');
+	$('.content').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
 	$('.content').on('click', '.product-title', function(){
