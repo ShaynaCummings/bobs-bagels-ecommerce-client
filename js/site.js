@@ -1,23 +1,65 @@
-var sampleOrder = {
-  lineitems:[
+// var sampleOrder = {
+//   lineitems:[
 
-    {
-      lineitem: {
-        product_id: 4,
-        combined_price: 6
-      },
-      lineitem_options: [14, 2, 7, 15]
-    },
+//     {
+//       lineitem: {
+//         product_id: 4,
+//         combined_price: 6
+//       },
+//       lineitem_options: [14, 2, 7, 15]
+//     },
 
-    {
-      lineitem: {
-        product_id: 10,
-        combined_price: 3.5
+//     {
+//       lineitem: {
+//         product_id: 10,
+//         combined_price: 3.5
+//       },
+//       lineitem_options: [45]
+//     }
+//   ],
+//   order_info:{
+//     status: 'pending',
+//     street_address: '50 Melcher Street',
+//     city: 'Boston',
+//     state: 'MA',
+//     zip_code: '02210',
+//     delivery_price: 6,
+//     order_total: 15.5
+//   }
+// };
+
+var cart = {
+	lineitems: [],
+	order_info:{}
+};
+
+function addToCart(e){
+	e.preventDefault();
+	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
+	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
+	var optionIdsArray = $(this).closest('.menuitem').find('.options-toggle input').map(function(){
+     return $.trim($(this).attr('value'));
+  }).get();;
+
+	var optionNamesArray = $(this).closest('.menuitem').find('.options-toggle label').map(function(){
+     return $.trim($(this).text());
+  }).get();;
+	var productName = $(this).closest('.menuitem').find('h3').text();
+
+	cart.lineitems.push({
+		lineitem: {
+        product_id: productId,
+        combined_price: combinedPrice
       },
-      lineitem_options: [45]
-    }
-  ],
-  order_info:{
+      lineitem_options: optionIdsArray
+
+	})
+}
+
+function placeOrder(e){
+	e.preventDefault();
+
+	cart.order_info = {
     status: 'pending',
     street_address: '50 Melcher Street',
     city: 'Boston',
@@ -26,12 +68,30 @@ var sampleOrder = {
     delivery_price: 6,
     order_total: 15.5
   }
-};
+
+  $.ajax({
+	  type: 'post',
+	  url: "https://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  dataType: "json",
+	  data: cart
+	})
+  .done(function(data){
+  	alert("Thank you! Your order was placed.");
+  });
+}
 
 (function($) {
+	//Goes to Log In
+	$('#log_in_button').on('click', function(){
+		alert("Log In");
+	});
+
+	// TEMPORARY PLACE ORDER TEST BUTTON
+	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").prependTo('.content #menu');
+	$('.content').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
-	$('.content').on('click', 'h3', function(){
+	$('.content').on('click', '.product-title', function(){
 		$(this).parent('.menuitem').find('.options-toggle').slideToggle();
 	});
 
@@ -45,6 +105,10 @@ var sampleOrder = {
     $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
   });
+
+  // listens 'add to cart' button and adds line item to cart
+
+  $(".content").on('click', '.add-to-cart', addToCart);
 
 	// GET products
 	$.ajax({
@@ -69,8 +133,16 @@ var sampleOrder = {
 
     // creates Sandwich DOM elements
     $.each(sandwiches, function(index, sandwich){
-    	var itemProperties = $('<h3>').text(sandwich.name).append($('<p>').addClass('description').text(sandwich.description).append($('<p>').addClass('price').text(sandwich.price)));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#sandwiches');
+    	var itemProperties = $('<h3>').text(sandwich.name).after($('<p>').addClass('description').text(sandwich.description).after($('<p>').addClass('price').text(sandwich.price)));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', sandwich.id.toString()).html(
+    					itemProperties
+  					)
+    			)
+    		)
+    	).appendTo('#sandwiches');
     	// creates option DOM items
     	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(sandwich.options, function(index, option){
@@ -83,13 +155,22 @@ var sampleOrder = {
     		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
     	});
     	// creates 'add to cart' button
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
 
     // creates Beverage DOM elements
     $.each(beverages, function(index, beverage){
-    	var itemProperties = $('<h3>').text(beverage.name).append($('<p>').addClass('price').text(beverage.price));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#beverages');
+    	var itemProperties = $('<h3>').text(beverage.name).after($('<p>').addClass('price').text(beverage.price));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', beverage.id.toString()).html(
+    					itemProperties
+  					)
+    			)
+    		)
+    	).appendTo('#beverages');
+
     	// creates option DOM items
     	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(beverage.options, function(index, option){
@@ -99,13 +180,21 @@ var sampleOrder = {
     	});
     	// creates 'add to cart' button
     	var lastOptionChild = $(container).find('.menuitem')
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
 
     // creates Catering DOM elements
     $.each(cateringItems, function(index, cateringItem){
-    	var itemProperties = $('<h3>').text(cateringItem.name).append($('<p>').addClass('description').text(cateringItem.description).append($('<p>').addClass('price').text(cateringItem.price)));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#cateringItems');
+    	var itemProperties = $('<h3>').text(cateringItem.name).after($('<p>').addClass('description').text(cateringItem.description).after($('<p>').addClass('price').text(cateringItem.price)));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', cateringItem.id.toString()).html(
+    					itemProperties
+  					)
+  				)
+  			)
+  		).appendTo('#cateringItems');
 	    // creates option DOM items
 	    var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
 	    $.each(cateringItem.options, function(index, option){
@@ -115,7 +204,7 @@ var sampleOrder = {
 	  	});
 	  	// creates 'add to cart' button
     	var lastOptionChild = $(container).find('.menuitem')
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
   });
 
