@@ -29,6 +29,10 @@ var sampleOrder = {
 };
 
 (function($) {
+	//Goes to Log In
+	$('#log_in_button').on('click', function(){
+		alert("Log In");
+	});
 
 	// toggles display of options menu for each product
 	$('.content').on('click', 'h3', function(){
