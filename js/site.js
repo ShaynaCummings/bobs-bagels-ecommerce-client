@@ -28,10 +28,13 @@
 //   }
 // };
 
+var allProducts = {};
+
 var cart = {
 	lineitems: [],
 	order_info:{}
 };
+
 
 function addToCart(e){
 	e.preventDefault();
@@ -46,15 +49,42 @@ function addToCart(e){
   }).get();;
 	var productName = $(this).closest('.menuitem').find('h3').text();
 
-	cart.lineitems.push({
+	var newLineitem = {
 		lineitem: {
-        product_id: productId,
-        combined_price: combinedPrice
-      },
-      lineitem_options: optionIdsArray
+      product_id: productId,
+      combined_price: combinedPrice
+    },
+    lineitem_options: optionIdsArray
+	};
 
-	})
+	cart.lineitems.push(newLineitem)
+
+	updateVisibleCart(newLineitem);
+
 }
+
+function updateVisibleCart(item){
+
+	console.table(item);
+
+	if ( $(".visible-cart").length === 0 ) {
+  	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
+  	$('<h2>').text("Your Cart").appendTo(cartContainer);
+  	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.visible-cart');
+	}
+
+
+
+	// $('<div>').addClass('vc-line-item').insertBefore('.place-order');
+	// $('<div>').addClass('vc-line-item-name').html(item.name).appendTo('.vc-line-item');
+	// $('<span>').addClass('vc-line-item-price').text("$ " + item.price).appendTo('.vc-line-item-name');
+	// $('<div>').addClass('vc-line-item-options').text("Options:").appendTo('.vc-line-item');
+	// $('<ul>').appendTo('.vc-line-item-options');
+	// $.each(item.options, function(index, optionName){
+	// 	$('<li>').text(optionName).appendTo('.vc-line-item-options ul');
+	// });
+}
+
 
 function placeOrder(e){
 	e.preventDefault();
@@ -82,8 +112,7 @@ function placeOrder(e){
 
 (function($) {
 
-	// TEMPORARY PLACE ORDER TEST BUTTON
-	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").prependTo('.content #menu');
+	// place order button listener
 	$('.content').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
@@ -111,7 +140,7 @@ function placeOrder(e){
   	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
   	type: 'GET',
 	}).done(function(products) {
-
+		allProducts = products;
 		// temp stores Sandwiches
     var sandwiches = $.grep(products, function(product){
     	return (product.category.name == 'Sandwiches');

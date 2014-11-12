@@ -1537,3 +1537,36 @@ margin: 20px 0;
 	-webkit-filter: drop-shadow(0 0 5px rgba(196, 54, 29, 0.26));
 	filter: drop-shadow(0 0 5px rgba(196, 54, 29, 0.26));
 }
+
+.visible-cart {
+	width: 350px;
+	background-color: rgba(255, 255, 255, 0.66);
+	position: absolute;
+	right: 0;
+}
+
+.vc-line-item-price{
+	color: #C3BC9A;
+	padding-left: 10px;
+	font-family: 'Open Sans';
+	font-size: 16px;
+}
+.vc-line-item-name{
+	font-family: 'Bree Serif', serif;
+	color: #453C37;
+	font-weight: normal;
+	text-transform: capitalize;
+	font-size: 20px;
+}
+
+.vc-line-item-options{
+	font-size:12px;
+}
+
+.visible-cart{
+	padding: 20px;
+}
+
+.place-order {
+	padding: 10px !important;
+}
