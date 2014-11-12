@@ -300,7 +300,7 @@ var sampleOrder = {
       	content: locInfo,
   		});
 
-			var bagelPic = '/images/bagel-map-marker.png'
+			var bagelPic = 'images/bagel-map-marker.png'
 			marker = new google.maps.Marker({
 				map:map,
 				draggable:true,
