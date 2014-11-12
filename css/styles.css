@@ -1493,11 +1493,22 @@ a.list-group-item:focus {
 	padding: 15px;
 }
 
-.options-list input{
+.options-radio, .options-checkbox{
+	display: none;
+}
+.options-radio input, .options-checkbox input{
 	padding: 8px;
 	margin: 0px 5px -4px 0;
 }
 
-.options-list em {
+.options-radio input, .options-checkbox em {
 	color: #aaa;
+}
+
+.options-radio input[type="radio"]{
+	border-radius: 30px;
+}
+
+input.checked {
+	background-image: url("/favicon.ico");
 }
