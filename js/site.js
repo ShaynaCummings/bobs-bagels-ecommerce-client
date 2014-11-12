@@ -38,12 +38,12 @@ var cart = {
 
 function addToCart(e){
 	e.preventDefault();
-	console.log(this);
 
-	// console.log($(this));
 	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
 	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
-	var optionIdsArray = $(this).closest('.menuitem').find('.options-toggle input').map(function(){
+	var $checkedOptions = $(this).siblings().find('.checked');
+
+	var optionIdsArray = $checkedOptions.map(function(){
      return $.trim($(this).attr('value'));
   }).get();;
 
@@ -61,9 +61,17 @@ function addToCart(e){
 
 }
 
-function updateVisibleCart(item){
+function getProduct(item){
+	var productId = item.lineitem.product_id;
 
-	// console.table(item);
+	var product = allProducts.filter(function( product ) {
+	  return product.id == productId;
+	});
+
+	return product[0];
+}
+
+function updateVisibleCart(item){
 
 	if ( $(".visible-cart").length === 0 ) {
   	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
@@ -71,8 +79,7 @@ function updateVisibleCart(item){
   	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.visible-cart');
 	}
 
-
-
+	console.log(getProduct(item));
 	// $('<div>').addClass('vc-line-item').insertBefore('.place-order');
 	// $('<div>').addClass('vc-line-item-name').html(item.name).appendTo('.vc-line-item');
 	// $('<span>').addClass('vc-line-item-price').text("$ " + item.price).appendTo('.vc-line-item-name');
