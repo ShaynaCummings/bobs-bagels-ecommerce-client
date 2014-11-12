@@ -245,6 +245,7 @@ input {
 	margin:0 auto;
 	position:relative;
 	z-index:100;
+	text-align:left;
 }
 
 .filter {
@@ -328,9 +329,8 @@ p.callout {
 }
 
 #menu .menuitem {
-	border-bottom:solid 1px #ccc;
-	padding-bottom:20px;
-	margin-bottom:20px;
+	border-bottom: solid 1px #ccc;
+	margin-bottom: 20px;
 }
 
 #menu h2 {
@@ -352,6 +352,7 @@ p.callout {
 #menu p {
 	color:#5C5C5C;
 	font-size:15px;
+	margin: 0;
 }
 
 #menu p.price {
@@ -1493,7 +1494,7 @@ a.list-group-item:focus {
 	padding: 15px;
 }
 
-.options-radio, .options-checkbox{
+.options-toggle{
 	display: none;
 }
 .options-radio input, .options-checkbox input{
@@ -1511,4 +1512,14 @@ a.list-group-item:focus {
 
 input.checked {
 	background-image: url("/favicon.ico");
+}
+
+button.add-to-cart {
+font-size: 14px;
+background: #C4361D;
+color: #F1E7D0;
+border: 1px solid #C3BC9A;
+border-radius: 4px;
+padding: 3px 8px;
+margin: 20px 0;
 }

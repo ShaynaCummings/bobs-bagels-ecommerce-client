@@ -30,45 +30,51 @@ var sampleOrder = {
 
 (function($) {
 
+	// toggles display of options menu for each product
+	$('.content').on('click', 'h3', function(){
+		$(this).parent('.menuitem').find('.options-toggle').slideToggle();
+	});
 
-	// handles toggling checkboxes
+	// toggles selection of checkboxes
 	$(".content").on('click', '.options-checkbox', function() {
       $(this).find("input").toggleClass("checked");
   });
 
-  // handles toggling radio buttons
+  // toggles selection of radio buttons
   $(".content").on('click', '.options-radio', function() {
-    $(this).parent(".menuitem").children(".options-radio").find('input').removeClass('checked');
+    $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
   });
 
-
-	$('.content').on('click', 'h3', function(){
-		$(this).parent('.menuitem').children('.options-radio').slideToggle();
-		$(this).parent('.menuitem').children('.options-checkbox').slideToggle();
-	});
-
+	// GET products
 	$.ajax({
-  	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
+  	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
   	type: 'GET',
 	}).done(function(products) {
+
+		// temp stores Sandwiches
     var sandwiches = $.grep(products, function(product){
     	return (product.category.name == 'Sandwiches');
     });
 
+    // temp stores Beverages
     var beverages = $.grep(products, function(product){
     	return (product.category.name == 'Beverages');
     });
 
+		// temp stores Catering
     var cateringItems = $.grep(products, function(product){
     	return (product.category.name == 'Catering');
     });
 
+    // creates Sandwich DOM elements
     $.each(sandwiches, function(index, sandwich){
     	var itemProperties = $('<h3>').text(sandwich.name).append($('<p>').addClass('description').text(sandwich.description).append($('<p>').addClass('price').text(sandwich.price)));
     	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#sandwiches');
+    	// creates option DOM items
+    	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(sandwich.options, function(index, option){
-    		var optionsList = $('<div>').addClass('options-checkbox').appendTo(container.find('.menuitem'));
+    		var optionsList = $('<div>').addClass('options-checkbox').appendTo(optionsToggle);
     		var checkBox = $('<input>', { type: 'checkbox', class: 'checked', value: option.id });
     		checkBox.appendTo(optionsList);
     		if(sandwich.name == "Build Your Own Bagel - Plain"){
@@ -76,28 +82,43 @@ var sampleOrder = {
     		}
     		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
     	});
+    	// creates 'add to cart' button
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
     });
 
+    // creates Beverage DOM elements
     $.each(beverages, function(index, beverage){
     	var itemProperties = $('<h3>').text(beverage.name).append($('<p>').addClass('price').text(beverage.price));
     	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#beverages');
+    	// creates option DOM items
+    	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(beverage.options, function(index, option){
-    		var optionsList = $('<div>').addClass('options-radio').appendTo(container.find('.menuitem'));
+    		var optionsList = $('<div>').addClass('options-radio').appendTo(optionsToggle);
     		$('<input>', { type: 'radio', value: option.id}).appendTo(optionsList);
     		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
     	});
+    	// creates 'add to cart' button
+    	var lastOptionChild = $(container).find('.menuitem')
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
     });
 
+    // creates Catering DOM elements
     $.each(cateringItems, function(index, cateringItem){
     	var itemProperties = $('<h3>').text(cateringItem.name).append($('<p>').addClass('description').text(cateringItem.description).append($('<p>').addClass('price').text(cateringItem.price)));
     	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#cateringItems');
+	    // creates option DOM items
+	    var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
 	    $.each(cateringItem.options, function(index, option){
-	  		var optionsList = $('<div>').addClass('options-radio').appendTo(container.find('.menuitem'));
+	  		var optionsList = $('<div>').addClass('options-radio').appendTo(optionsToggle);
 	  		$('<input>', { type: 'radio', value: option.id }).appendTo(optionsList);
 	  		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
 	  	});
+	  	// creates 'add to cart' button
+    	var lastOptionChild = $(container).find('.menuitem')
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
     });
   });
+
 
 	"use strict";
 	$(function() {
@@ -190,7 +211,6 @@ var sampleOrder = {
 			var z = $(window).scrollTop();
 			var acdifference = x-z;
 			if (x <= z) {
-				//console.log(acdifference);
 				if (acdifference < 0 && acdifference > -69) {
 					$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
 				} else if (acdifference < -69 && acdifference > -126) {
