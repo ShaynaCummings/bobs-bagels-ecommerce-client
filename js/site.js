@@ -67,27 +67,38 @@ function getProduct(item){
 	var product = allProducts.filter(function( product ) {
 	  return product.id == productId;
 	});
-
 	return product[0];
+}
+
+function getOption(product, optionId){
+	var option = product.options.filter(function( option ) {
+	  return option.id == optionId;
+	});
+	return option[0];
 }
 
 function updateVisibleCart(item){
 
+	// create cart if it doesn't already exist
 	if ( $(".visible-cart").length === 0 ) {
   	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
   	$('<h2>').text("Your Cart").appendTo(cartContainer);
   	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.visible-cart');
 	}
 
-	console.log(getProduct(item));
-	// $('<div>').addClass('vc-line-item').insertBefore('.place-order');
-	// $('<div>').addClass('vc-line-item-name').html(item.name).appendTo('.vc-line-item');
-	// $('<span>').addClass('vc-line-item-price').text("$ " + item.price).appendTo('.vc-line-item-name');
-	// $('<div>').addClass('vc-line-item-options').text("Options:").appendTo('.vc-line-item');
-	// $('<ul>').appendTo('.vc-line-item-options');
-	// $.each(item.options, function(index, optionName){
-	// 	$('<li>').text(optionName).appendTo('.vc-line-item-options ul');
-	// });
+	var product = getProduct(item);
+	console.log(product);
+
+	var lineItemContainer = $('<div>').addClass('vc-line-item').insertBefore('.place-order');
+	$('<div>').addClass('vc-line-item-name').html(product.name).appendTo(lineItemContainer);
+	$('<span>').addClass('vc-line-item-price').text("$ " + product.price).appendTo(lineItemContainer.find('.vc-line-item-name'));
+	$('<div>').addClass('vc-line-item-options').text("Options:").appendTo(lineItemContainer);
+	$('<ul>').appendTo(lineItemContainer.find('.vc-line-item-options'));
+	$.each(item.lineitem_options, function(index, optionId){
+		var option = getOption(product, optionId);
+		$('<li>').text(option.name).appendTo(lineItemContainer.find('.vc-line-item-options ul'));
+	});
+
 }
 
 
@@ -106,7 +117,8 @@ function placeOrder(e){
 
   $.ajax({
 	  type: 'post',
-	  url: "https://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  // url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  url: "http://localhost3000/orders",
 	  dataType: "json",
 	  data: cart
 	})
@@ -146,7 +158,8 @@ function placeOrder(e){
 
 	// GET products
 	$.ajax({
-  	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	// url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	url: "http://localhost:3000/products",
   	type: 'GET',
 	}).done(function(products) {
 		allProducts = products;
