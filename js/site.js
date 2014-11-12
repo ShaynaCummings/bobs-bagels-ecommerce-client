@@ -295,30 +295,30 @@ function placeOrder(e){
 			});
 		}
 
-		function beermount() {
-			var x = $($("#beer").parent().parent()).offset().top + $($("#beer").parent().parent()).outerHeight() -900;
-			var z = $(window).scrollTop();
-			var acdifference = x-z;
-			if (x <= z) {
-				if (acdifference < 0 && acdifference > -69) {
-					$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
-				} else if (acdifference < -69 && acdifference > -126) {
-					$("#beer").css({backgroundPosition: "-"+ypos[1]+"px 0px"});
-				} else if (acdifference < -126 && acdifference > -174) {
-					$("#beer").css({backgroundPosition: "-"+ypos[2]+"px 0px"});
-				} else if (acdifference < -174 && acdifference > -229) {
-					$("#beer").css({backgroundPosition: "-"+ypos[3]+"px 0px"});
-				} else if (acdifference < -229 && acdifference > -290) {
-					$("#beer").css({backgroundPosition: "-"+ypos[4]+"px 0px"});
-				} else if (acdifference < -290 && acdifference > -330) {
-					$("#beer").css({backgroundPosition: "-"+ypos[5]+"px 0px"});
-				} else if (acdifference > -330) {
-					$("#beer").css({backgroundPosition: "-"+ypos[6]+"px 0px"});
-				}
-			} else {
-				$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
-			}
-		}
+		// function beermount() {
+		// 	var x = $($("#beer").parent().parent()).offset().top + $($("#beer").parent().parent()).outerHeight() -900;
+		// 	var z = $(window).scrollTop();
+		// 	var acdifference = x-z;
+		// 	if (x <= z) {
+		// 		if (acdifference < 0 && acdifference > -69) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
+		// 		} else if (acdifference < -69 && acdifference > -126) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[1]+"px 0px"});
+		// 		} else if (acdifference < -126 && acdifference > -174) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[2]+"px 0px"});
+		// 		} else if (acdifference < -174 && acdifference > -229) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[3]+"px 0px"});
+		// 		} else if (acdifference < -229 && acdifference > -290) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[4]+"px 0px"});
+		// 		} else if (acdifference < -290 && acdifference > -330) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[5]+"px 0px"});
+		// 		} else if (acdifference > -330) {
+		// 			$("#beer").css({backgroundPosition: "-"+ypos[6]+"px 0px"});
+		// 		}
+		// 	} else {
+		// 		$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
+		// 	}
+		// }
 
 		$('#nav a, .arrow a, .anchor').click(function(){
 			$('html, body').stop().animate({
