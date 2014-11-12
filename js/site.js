@@ -4,25 +4,57 @@
     	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
     	type: 'GET',
   	}).done(function(results) {
-    	// console.table(results);
 
-for(var i = 0; i < results.length; i++){
-     // for(var j = 0; j < results[i].length; j++){
-        console.log(results[i].options[1].name);
-     // }
-};
+// code from hackhands guy that does not work:
+// results.each(function(i, el){
+// 	var list = $('#js-product-list');
+//     list.append(
+//       	make('h3').text(el.name)
+//     ).append(
+//     	make('ul')
+//     );
 
-    for(var i = 0, count = results.length; i < count; i++) {
-    	$('#js-product-list').append('<h3>'
-    		+ results[i].name
-    		+ '</h3><p>'
+//     el.options.each(function(i, options){
+//     	list.find('ul').append(
+//     		make('li').text(options.name)
+//     	);
+//     });
+// });
+
+// function make(el){
+//     return $(document.createElement(el));
+// };
+
+
+//this does not do what i want it to do:
+   for(var i = 0, count = results.length; i < count; i++) {
+   	var opts = results[i].options;
+
+    	$('#js-product-list').append('<h3>'+ results[i].name + '</h3><p>'
     		+ results[i].description
-    		+ '</p><p> With: '
-    		+ results[i].options[1].name
     		+ '</p><p class="price">'
     		+ results[i].price
     		+ '</p>');
-    	};
+
+  		   $('#js-product-list').append('<ul></ul>');
+
+	  	for(var j = 0; j < opts.length; j++){
+	      $('#js-product-list ul').append('<li>'+opts[j].name+'<li>')
+	    }
+  }
+
+// prev version:
+    // for(var i = 0, count = results.length; i < count; i++) {
+    // 	$('#js-product-list').append('<h3>'
+    // 		+ results[i].name
+    // 		+ '</h3><p>'
+    // 		+ results[i].description
+    // 		+ '</p><p> With: '
+    // 		+ results[i].options[1].name
+    // 		+ '</p><p class="price">'
+    // 		+ results[i].price
+    // 		+ '</p>');
+    // 	};
 
     });
 
