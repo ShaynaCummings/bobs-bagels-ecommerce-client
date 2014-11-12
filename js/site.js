@@ -1,30 +1,50 @@
+
+
 (function($) {
 
 	$.ajax({
-    	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
-    	type: 'GET',
-  	}).done(function(results) {
-    	// console.table(results);
+  	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
+  	type: 'GET',
+	}).done(function(products) {
 
-for(var i = 0; i < results.length; i++){
-     // for(var j = 0; j < results[i].length; j++){
-        console.log(results[i].options[1].name);
-     // }
-};
+		console.log(products)
+    var sandwiches = $.grep(products, function(product){
+    	return (product.category.name == 'Sandwiches');
+    });
 
-    for(var i = 0, count = results.length; i < count; i++) {
-    	$('#js-product-list').append('<h3>'
-    		+ results[i].name
-    		+ '</h3><p>'
-    		+ results[i].description
-    		+ '</p><p> With: '
-    		+ results[i].options[1].name
-    		+ '</p><p class="price">'
-    		+ results[i].price
-    		+ '</p>');
-    	};
+    var beverages = $.grep(products, function(product){
+    	return (product.category.name == 'Beverages');
+    });
+
+    var cateringItems = $.grep(products, function(product){
+    	return (product.category.name == 'Catering');
+    });
+
+    $.each(sandwiches, function(index, sandwich){
+    	var itemProperties = $('<h3>').text(sandwich.name).append($('<p>').addClass('description').text(sandwich.description).append($('<p>').addClass('price').text(sandwich.price)));
+    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#sandwiches');
+    	$.each(sandwich.options, function(index, option){
+    		var optionsList = $('<div>').addClass('options-list').appendTo(container.find('.menuitem'));
+    		$('<input>', { type: 'checkbox', value: option.name, "checked":"checked" }).appendTo(optionsList);
+    		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
+
+    	});
+
+
 
     });
+
+    $.each(beverages, function(index, beverage){
+    	var itemProperties = $('<h3>').text(beverage.name).append($('<p>').addClass('description').text(beverage.description).append($('<p>').addClass('price').text(beverage.price)));
+    	$('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#beverages');
+    });
+
+    $.each(cateringItems, function(index, cateringItem){
+    	var itemProperties = $('<h3>').text(cateringItem.name).append($('<p>').addClass('description').text(cateringItem.description).append($('<p>').addClass('price').text(cateringItem.price)));
+    	$('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#cateringItems');
+    });
+
+  });
 
 	"use strict";
 	$(function() {

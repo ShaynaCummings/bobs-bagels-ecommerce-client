@@ -357,15 +357,17 @@ p.callout {
 #menu p.price {
 	font-weight:bold;
 	text-align:right;
-	margin-top:20px;
+	margin: 0;
+	color:#C3BC9A;
+	font-size:19px;
+	position: relative;
+	top: -25px;
 }
 
 #menu p.calories {
 	font-weight:bold;
 	text-align:right;
 	margin-top:20px;
-	color:#C3BC9A;
-	font-size:19px;
 }
 
 .col1 {
@@ -1489,4 +1491,13 @@ a.list-group-item:focus {
 	margin-bottom: 20px;
 	border: 1px dashed #ccc;
 	padding: 15px;
+}
+
+.options-list input{
+	padding: 8px;
+	margin: 0px 5px -4px 0;
+}
+
+.options-list em {
+	color: #aaa;
 }
