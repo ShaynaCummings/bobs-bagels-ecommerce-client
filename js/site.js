@@ -38,16 +38,14 @@ var cart = {
 
 function addToCart(e){
 	e.preventDefault();
+	console.log(this);
+
+	// console.log($(this));
 	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
 	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
 	var optionIdsArray = $(this).closest('.menuitem').find('.options-toggle input').map(function(){
      return $.trim($(this).attr('value'));
   }).get();;
-
-	var optionNamesArray = $(this).closest('.menuitem').find('.options-toggle label').map(function(){
-     return $.trim($(this).text());
-  }).get();;
-	var productName = $(this).closest('.menuitem').find('h3').text();
 
 	var newLineitem = {
 		lineitem: {
@@ -65,7 +63,7 @@ function addToCart(e){
 
 function updateVisibleCart(item){
 
-	console.table(item);
+	// console.table(item);
 
 	if ( $(".visible-cart").length === 0 ) {
   	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
@@ -123,12 +121,16 @@ function placeOrder(e){
 	// toggles selection of checkboxes
 	$(".content").on('click', '.options-checkbox', function() {
       $(this).find("input").toggleClass("checked");
+      $(this).toggleClass("checked");
   });
 
   // toggles selection of radio buttons
   $(".content").on('click', '.options-radio', function() {
     $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
+
+    $(this).parent(".options-toggle").children(".options-radio").removeClass('checked');
+    $(this).toggleClass("checked");
   });
 
   // listens 'add to cart' button and adds line item to cart
