@@ -245,6 +245,7 @@ input {
 	margin:0 auto;
 	position:relative;
 	z-index:100;
+	text-align:left;
 }
 
 .filter {
@@ -328,9 +329,8 @@ p.callout {
 }
 
 #menu .menuitem {
-	border-bottom:solid 1px #ccc;
-	padding-bottom:20px;
-	margin-bottom:20px;
+	border-bottom: solid 1px #ccc;
+	margin-bottom: 20px;
 }
 
 #menu h2 {
@@ -352,20 +352,23 @@ p.callout {
 #menu p {
 	color:#5C5C5C;
 	font-size:15px;
+	margin: 0;
 }
 
 #menu p.price {
 	font-weight:bold;
 	text-align:right;
-	margin-top:20px;
+	margin: 0;
+	color:#C3BC9A;
+	font-size:19px;
+	position: relative;
+	top: -25px;
 }
 
 #menu p.calories {
 	font-weight:bold;
 	text-align:right;
 	margin-top:20px;
-	color:#C3BC9A;
-	font-size:19px;
 }
 
 .col1 {
@@ -1489,4 +1492,34 @@ a.list-group-item:focus {
 	margin-bottom: 20px;
 	border: 1px dashed #ccc;
 	padding: 15px;
+}
+
+.options-toggle{
+	display: none;
+}
+.options-radio input, .options-checkbox input{
+	padding: 8px;
+	margin: 0px 5px -4px 0;
+}
+
+.options-radio input, .options-checkbox em {
+	color: #aaa;
+}
+
+.options-radio input[type="radio"]{
+	border-radius: 30px;
+}
+
+input.checked {
+	background-image: url("/favicon.ico");
+}
+
+button.add-to-cart {
+font-size: 14px;
+background: #C4361D;
+color: #F1E7D0;
+border: 1px solid #C3BC9A;
+border-radius: 4px;
+padding: 3px 8px;
+margin: 20px 0;
 }

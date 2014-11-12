@@ -1,30 +1,124 @@
-(function($) {
+var sampleOrder = {
+  lineitems:[
 
-	$.ajax({
-    	url: 'http://bobs-bagels-ecommerce.herokuapp.com/products',
-    	type: 'GET',
-  	}).done(function(results) {
-    	// console.table(results);
+    {
+      lineitem: {
+        product_id: 4,
+        combined_price: 6
+      },
+      lineitem_options: [14, 2, 7, 15]
+    },
 
-for(var i = 0; i < results.length; i++){
-     // for(var j = 0; j < results[i].length; j++){
-        console.log(results[i].options[1].name);
-     // }
+    {
+      lineitem: {
+        product_id: 10,
+        combined_price: 3.5
+      },
+      lineitem_options: [45]
+    }
+  ],
+  order_info:{
+    status: 'pending',
+    street_address: '50 Melcher Street',
+    city: 'Boston',
+    state: 'MA',
+    zip_code: '02210',
+    delivery_price: 6,
+    order_total: 15.5
+  }
 };
 
-    for(var i = 0, count = results.length; i < count; i++) {
-    	$('#js-product-list').append('<h3>'
-    		+ results[i].name
-    		+ '</h3><p>'
-    		+ results[i].description
-    		+ '</p><p> With: '
-    		+ results[i].options[1].name
-    		+ '</p><p class="price">'
-    		+ results[i].price
-    		+ '</p>');
-    	};
+(function($) {
 
+	// toggles display of options menu for each product
+	$('.content').on('click', 'h3', function(){
+		$(this).parent('.menuitem').find('.options-toggle').slideToggle();
+	});
+
+	// toggles selection of checkboxes
+	$(".content").on('click', '.options-checkbox', function() {
+      $(this).find("input").toggleClass("checked");
+  });
+
+  // toggles selection of radio buttons
+  $(".content").on('click', '.options-radio', function() {
+    $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
+    $(this).find("input").addClass("checked");
+  });
+
+	// GET products
+	$.ajax({
+  	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	type: 'GET',
+	}).done(function(products) {
+
+		// temp stores Sandwiches
+    var sandwiches = $.grep(products, function(product){
+    	return (product.category.name == 'Sandwiches');
     });
+
+    // temp stores Beverages
+    var beverages = $.grep(products, function(product){
+    	return (product.category.name == 'Beverages');
+    });
+
+		// temp stores Catering
+    var cateringItems = $.grep(products, function(product){
+    	return (product.category.name == 'Catering');
+    });
+
+    // creates Sandwich DOM elements
+    $.each(sandwiches, function(index, sandwich){
+    	var itemProperties = $('<h3>').text(sandwich.name).append($('<p>').addClass('description').text(sandwich.description).append($('<p>').addClass('price').text(sandwich.price)));
+    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#sandwiches');
+    	// creates option DOM items
+    	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
+    	$.each(sandwich.options, function(index, option){
+    		var optionsList = $('<div>').addClass('options-checkbox').appendTo(optionsToggle);
+    		var checkBox = $('<input>', { type: 'checkbox', class: 'checked', value: option.id });
+    		checkBox.appendTo(optionsList);
+    		if(sandwich.name == "Build Your Own Bagel - Plain"){
+    			checkBox.toggleClass("checked");
+    		}
+    		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
+    	});
+    	// creates 'add to cart' button
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    });
+
+    // creates Beverage DOM elements
+    $.each(beverages, function(index, beverage){
+    	var itemProperties = $('<h3>').text(beverage.name).append($('<p>').addClass('price').text(beverage.price));
+    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#beverages');
+    	// creates option DOM items
+    	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
+    	$.each(beverage.options, function(index, option){
+    		var optionsList = $('<div>').addClass('options-radio').appendTo(optionsToggle);
+    		$('<input>', { type: 'radio', value: option.id}).appendTo(optionsList);
+    		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
+    	});
+    	// creates 'add to cart' button
+    	var lastOptionChild = $(container).find('.menuitem')
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    });
+
+    // creates Catering DOM elements
+    $.each(cateringItems, function(index, cateringItem){
+    	var itemProperties = $('<h3>').text(cateringItem.name).append($('<p>').addClass('description').text(cateringItem.description).append($('<p>').addClass('price').text(cateringItem.price)));
+    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#cateringItems');
+	    // creates option DOM items
+	    var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
+	    $.each(cateringItem.options, function(index, option){
+	  		var optionsList = $('<div>').addClass('options-radio').appendTo(optionsToggle);
+	  		$('<input>', { type: 'radio', value: option.id }).appendTo(optionsList);
+	  		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
+	  	});
+	  	// creates 'add to cart' button
+    	var lastOptionChild = $(container).find('.menuitem')
+    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    });
+  });
+
 
 	"use strict";
 	$(function() {
@@ -117,7 +211,6 @@ for(var i = 0; i < results.length; i++){
 			var z = $(window).scrollTop();
 			var acdifference = x-z;
 			if (x <= z) {
-				//console.log(acdifference);
 				if (acdifference < 0 && acdifference > -69) {
 					$("#beer").css({backgroundPosition: "-"+ypos[0]+"px 0px"});
 				} else if (acdifference < -69 && acdifference > -126) {
