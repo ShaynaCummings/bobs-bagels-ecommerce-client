@@ -28,6 +28,35 @@ var sampleOrder = {
   }
 };
 
+var cart = {
+	lineitems: [],
+	order_info:{}
+};
+
+function addToCart(e){
+	e.preventDefault();
+	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
+	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
+	var optionIdsArray = $(this).closest('.menuitem').find('.options-toggle input').map(function(){
+     return $.trim($(this).attr('value'));
+  }).get();;
+
+	var optionNamesArray = $(this).closest('.menuitem').find('.options-toggle label').map(function(){
+     return $.trim($(this).text());
+  }).get();;
+	var productName = $(this).closest('.menuitem').find('h3').text();
+
+	cart.lineitems.push({
+		lineitem: {
+        product_id: productId,
+        combined_price: combinedPrice
+      },
+      lineitem_options: optionIdsArray
+	})
+
+	console.table(cart);
+}
+
 (function($) {
 
 	// toggles display of options menu for each product
@@ -45,6 +74,10 @@ var sampleOrder = {
     $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
   });
+
+  // listens 'add to cart' button and adds line item to cart
+
+  $(".content").on('click', '.add-to-cart', addToCart);
 
 	// GET products
 	$.ajax({
