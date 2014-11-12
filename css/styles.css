@@ -1511,7 +1511,7 @@ a.list-group-item:focus {
 }
 
 input.checked {
-	background-image: url("/favicon.ico");
+	background-image: url("favicon.ico");
 }
 
 button.add-to-cart {
