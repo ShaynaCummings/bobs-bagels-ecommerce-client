@@ -1572,7 +1572,7 @@ margin: 20px 0;
 }
 
 .place-order {
-	padding: 10px !important;
+	padding: 5px !important;
 }
 
 .checkout-popup {
@@ -1616,7 +1616,8 @@ margin: 20px 0;
 
 .checkout-popup input{
 	display: block;
-	margin: 10px 0;
-	font-size: 18px;
+	margin: 3px 0;
+	padding: 4px 5px;
+	font-size: 14px;
 	width: 350px;
 }

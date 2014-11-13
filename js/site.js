@@ -100,6 +100,16 @@ function updateVisibleCart(item){
 
 }
 
+function stripeResponseHandler(status, response){
+
+	if (response.error) {
+    // Show the errors on the form
+  } else {
+    cart.stripe = response.id;
+    // Insert the token into the form so it gets submitted to the server
+  }
+}
+
 function placeOrder(e){
 	e.preventDefault();
 
@@ -113,6 +123,14 @@ function placeOrder(e){
     order_total: 15.5
   }
 
+  Stripe.card.createToken({
+	  number: $('.card-number').val(),
+	  cvc: $('.card-cvc').val(),
+	  exp_month: $('.card-expiry-month').val(),
+	  exp_year: $('.card-expiry-year').val()
+	}, stripeResponseHandler);
+
+
   $.ajax({
 	  type: 'post',
 	  url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
@@ -121,6 +139,7 @@ function placeOrder(e){
 	  data: cart
 	})
   .done(function(data){
+  	toggleCheckoutPopup();
   	alert("Thank you! Your order was placed.");
   });
 }
@@ -152,8 +171,22 @@ function checkout(e){
 		$('<input>').addClass('state').appendTo('.checkout-popup');
 		$('<label>').text('Zip Code: ').appendTo('.checkout-popup');
 		$('<input>').addClass('zip-code').appendTo('.checkout-popup');
+
+		// credit card form
+		$('<h3>').text('Credit Card Information').appendTo('.checkout-popup')
+		$('<label>').text('Card Number: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-number').appendTo('.checkout-popup');
+		$('<label>').text('CVC: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-cvc').appendTo('.checkout-popup');
+		$('<label>').text('Expiration Month: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-expiry-month').appendTo('.checkout-popup');
+		$('<label>').text('Expiration Year: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-expiry-year').appendTo('.checkout-popup');
+
+		// place order button
 		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
 
+		Stripe.setPublishableKey('pk_test_WtQkmBDpvOCFbkI6Bq3p3i6F');
 	}
 
 	toggleCheckoutPopup();
