@@ -83,13 +83,12 @@ function updateVisibleCart(item){
 	if ( $(".visible-cart").length === 0 ) {
   	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
   	$('<h2>').text("Your Cart").appendTo(cartContainer);
-  	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.visible-cart');
+  	$('<a>').attr('href', "#").addClass('checkout button').text("Checkout").appendTo('.visible-cart');
 	}
 
 	var product = getProduct(item);
-	console.log(product);
 
-	var lineItemContainer = $('<div>').addClass('vc-line-item').insertBefore('.place-order');
+	var lineItemContainer = $('<div>').addClass('vc-line-item').insertBefore('.checkout');
 	$('<div>').addClass('vc-line-item-name').html(product.name).appendTo(lineItemContainer);
 	$('<span>').addClass('vc-line-item-price').text("$ " + product.price).appendTo(lineItemContainer.find('.vc-line-item-name'));
 	$('<div>').addClass('vc-line-item-options').text("Options:").appendTo(lineItemContainer);
@@ -101,16 +100,15 @@ function updateVisibleCart(item){
 
 }
 
-
 function placeOrder(e){
 	e.preventDefault();
 
 	cart.order_info = {
     status: 'pending',
-    street_address: '50 Melcher Street',
-    city: 'Boston',
-    state: 'MA',
-    zip_code: '02210',
+    street_address: $('.street-address').val(),
+    city: $('.city').val(),
+    state: $('.state').val(),
+    zip_code: $('.zip-code').val(),
     delivery_price: 6,
     order_total: 15.5
   }
@@ -118,7 +116,7 @@ function placeOrder(e){
   $.ajax({
 	  type: 'post',
 	  // url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
-	  url: "http://localhost3000/orders",
+	  url: "http://localhost:3000/orders",
 	  dataType: "json",
 	  data: cart
 	})
@@ -127,10 +125,51 @@ function placeOrder(e){
   });
 }
 
+function toggleCheckoutPopup(){
+	$('.black-overlay').toggle();
+	$('.checkout-popup').toggle();
+}
+
+
+function checkout(e){
+	e.preventDefault();
+
+	//create checkout if it doesnt exist
+	if ( $(".checkout-popup").length === 0 ){
+
+		// create container
+		$('<div>').addClass('black-overlay').prependTo('#allconent');
+		$('<div>').addClass('checkout-popup').prependTo('#allconent');
+		$('<img>').attr('src', 'images/x-button.png').addClass('x-button').prependTo('.checkout-popup');
+
+		// delivery form
+		$('<h3>').text('Delivery Information').appendTo('.checkout-popup')
+		$('<label>').text('Street Address: ').appendTo('.checkout-popup');
+		$('<input>').addClass('street-address').appendTo('.checkout-popup');
+		$('<label>').text('City: ').appendTo('.checkout-popup');
+		$('<input>').addClass('city').appendTo('.checkout-popup');
+		$('<label>').text('State: ').appendTo('.checkout-popup');
+		$('<input>').addClass('state').appendTo('.checkout-popup');
+		$('<label>').text('Zip Code: ').appendTo('.checkout-popup');
+		$('<input>').addClass('zip-code').appendTo('.checkout-popup');
+		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
+
+	}
+
+	toggleCheckoutPopup();
+
+}
+
 (function($) {
 
+	// checkout button listener
+	$('.content').on('click', '.checkout', checkout);
+
+	// checkout x-button (close) listener
+	$('#allconent').on('click', '.x-button', toggleCheckoutPopup);
+
 	// place order button listener
-	$('.content').on('click', '.place-order', placeOrder);
+	$('#allconent').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
 	$('.content').on('click', '.product-title', function(){
