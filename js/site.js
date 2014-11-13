@@ -28,32 +28,76 @@
 //   }
 // };
 
+var allProducts = {};
+
 var cart = {
 	lineitems: [],
 	order_info:{}
 };
 
+
 function addToCart(e){
 	e.preventDefault();
+
 	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
 	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
-	var optionIdsArray = $(this).closest('.menuitem').find('.options-toggle input').map(function(){
+	var $checkedOptions = $(this).siblings().find('.checked');
+
+	var optionIdsArray = $checkedOptions.map(function(){
      return $.trim($(this).attr('value'));
   }).get();;
 
-	var optionNamesArray = $(this).closest('.menuitem').find('.options-toggle label').map(function(){
-     return $.trim($(this).text());
-  }).get();;
-	var productName = $(this).closest('.menuitem').find('h3').text();
-
-	cart.lineitems.push({
+	var newLineitem = {
 		lineitem: {
-        product_id: productId,
-        combined_price: combinedPrice
-      },
-      lineitem_options: optionIdsArray
+      product_id: productId,
+      combined_price: combinedPrice
+    },
+    lineitem_options: optionIdsArray
+	};
 
-	})
+	cart.lineitems.push(newLineitem)
+
+	updateVisibleCart(newLineitem);
+
+}
+
+function getProduct(item){
+	var productId = item.lineitem.product_id;
+
+	var product = allProducts.filter(function( product ) {
+	  return product.id == productId;
+	});
+	return product[0];
+}
+
+function getOption(product, optionId){
+	var option = product.options.filter(function( option ) {
+	  return option.id == optionId;
+	});
+	return option[0];
+}
+
+function updateVisibleCart(item){
+
+	// create cart if it doesn't already exist
+	if ( $(".visible-cart").length === 0 ) {
+  	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
+  	$('<h2>').text("Your Cart").appendTo(cartContainer);
+  	$('<a>').attr('href', "#").addClass('checkout button').text("Checkout").appendTo('.visible-cart');
+	}
+
+	var product = getProduct(item);
+
+	var lineItemContainer = $('<div>').addClass('vc-line-item').insertBefore('.checkout');
+	$('<div>').addClass('vc-line-item-name').html(product.name).appendTo(lineItemContainer);
+	$('<span>').addClass('vc-line-item-price').text("$ " + product.price).appendTo(lineItemContainer.find('.vc-line-item-name'));
+	$('<div>').addClass('vc-line-item-options').text("Options:").appendTo(lineItemContainer);
+	$('<ul>').appendTo(lineItemContainer.find('.vc-line-item-options'));
+	$.each(item.lineitem_options, function(index, optionId){
+		var option = getOption(product, optionId);
+		$('<li>').text(option.name).appendTo(lineItemContainer.find('.vc-line-item-options ul'));
+	});
+
 }
 
 function placeOrder(e){
@@ -61,17 +105,18 @@ function placeOrder(e){
 
 	cart.order_info = {
     status: 'pending',
-    street_address: '50 Melcher Street',
-    city: 'Boston',
-    state: 'MA',
-    zip_code: '02210',
+    street_address: $('.street-address').val(),
+    city: $('.city').val(),
+    state: $('.state').val(),
+    zip_code: $('.zip-code').val(),
     delivery_price: 6,
     order_total: 15.5
   }
 
   $.ajax({
 	  type: 'post',
-	  url: "https://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  // url: "http://localhost:3000/orders",
 	  dataType: "json",
 	  data: cart
 	})
@@ -80,15 +125,55 @@ function placeOrder(e){
   });
 }
 
+function toggleCheckoutPopup(){
+	$('.black-overlay').toggle();
+	$('.checkout-popup').toggle();
+}
+
+
+function checkout(e){
+	e.preventDefault();
+
+	//create checkout if it doesnt exist
+	if ( $(".checkout-popup").length === 0 ){
+
+		// create container
+		$('<div>').addClass('black-overlay').prependTo('#allconent');
+		$('<div>').addClass('checkout-popup').prependTo('#allconent');
+		$('<img>').attr('src', 'images/x-button.png').addClass('x-button').prependTo('.checkout-popup');
+
+		// delivery form
+		$('<h3>').text('Delivery Information').appendTo('.checkout-popup')
+		$('<label>').text('Street Address: ').appendTo('.checkout-popup');
+		$('<input>').addClass('street-address').appendTo('.checkout-popup');
+		$('<label>').text('City: ').appendTo('.checkout-popup');
+		$('<input>').addClass('city').appendTo('.checkout-popup');
+		$('<label>').text('State: ').appendTo('.checkout-popup');
+		$('<input>').addClass('state').appendTo('.checkout-popup');
+		$('<label>').text('Zip Code: ').appendTo('.checkout-popup');
+		$('<input>').addClass('zip-code').appendTo('.checkout-popup');
+		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
+
+	}
+
+	toggleCheckoutPopup();
+
+}
+
 (function($) {
 	//Goes to Log In
 	$('#log_in_button').on('click', function(){
 		alert("Log In");
 	});
 
-	// TEMPORARY PLACE ORDER TEST BUTTON
-	$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").prependTo('.content #menu');
-	$('.content').on('click', '.place-order', placeOrder);
+	// checkout button listener
+	$('.content').on('click', '.checkout', checkout);
+
+	// checkout x-button (close) listener
+	$('#allconent').on('click', '.x-button', toggleCheckoutPopup);
+
+	// place order button listener
+	$('#allconent').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
 	$('.content').on('click', '.product-title', function(){
@@ -98,12 +183,16 @@ function placeOrder(e){
 	// toggles selection of checkboxes
 	$(".content").on('click', '.options-checkbox', function() {
       $(this).find("input").toggleClass("checked");
+      $(this).toggleClass("checked");
   });
 
   // toggles selection of radio buttons
   $(".content").on('click', '.options-radio', function() {
     $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
+
+    $(this).parent(".options-toggle").children(".options-radio").removeClass('checked');
+    $(this).toggleClass("checked");
   });
 
   // listens 'add to cart' button and adds line item to cart
@@ -113,9 +202,10 @@ function placeOrder(e){
 	// GET products
 	$.ajax({
   	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	// url: "http://localhost:3000/products",
   	type: 'GET',
 	}).done(function(products) {
-
+		allProducts = products;
 		// temp stores Sandwiches
     var sandwiches = $.grep(products, function(product){
     	return (product.category.name == 'Sandwiches');
