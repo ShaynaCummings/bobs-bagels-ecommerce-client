@@ -1518,7 +1518,7 @@ a.list-group-item:focus {
 }
 
 input.checked {
-	background-image: url("/images/checkmark.png");
+	background-image: url("../images/checkmark.png");
 	background-size: 100%;
 }
 
