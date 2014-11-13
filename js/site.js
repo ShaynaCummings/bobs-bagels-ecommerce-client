@@ -1,3 +1,5 @@
+// What the server expects as input for an order
+//
 // var sampleOrder = {
 //   lineitems:[
 
@@ -26,14 +28,24 @@
 //     delivery_price: 6,
 //     order_total: 15.5
 //   }
+// 	 stripe: 'stripetoken'
 // };
 
+// to save all products from server
 var allProducts = {};
 
+// to save cart
 var cart = {
 	lineitems: [],
 	order_info:{}
 };
+
+function emptyCart(){
+	cart = {
+		lineitems: [],
+		order_info:{}
+	};
+}
 
 
 function addToCart(e){
@@ -59,6 +71,19 @@ function addToCart(e){
 
 	updateVisibleCart(newLineitem);
 
+	updateOrderTotal(combinedPrice);
+
+}
+
+function updateOrderTotal(price){
+
+
+	if( $('.order-total').length === 0 ){
+		cart.order_info.order_total = 0
+		$('<div>').addClass('order-total').insertAfter('.checkout');
+	}
+	cart.order_info.order_total += parseFloat(price);
+	$('.order-total').text("Current Total: $" + cart.order_info.order_total);
 }
 
 function getProduct(item){
@@ -133,13 +158,14 @@ function placeOrder(e){
 
   $.ajax({
 	  type: 'post',
-	  url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
-	  // url: "http://localhost:3000/orders",
+	  // url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  url: "http://localhost:3000/orders",
 	  dataType: "json",
 	  data: cart
 	})
   .done(function(data){
   	toggleCheckoutPopup();
+  	// emptyCart();
   	alert("Thank you! Your order was placed.");
   });
 }
@@ -230,8 +256,8 @@ function checkout(e){
 
 	// GET products
 	$.ajax({
-  	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
-  	// url: "http://localhost:3000/products",
+  	// url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	url: "http://localhost:3000/products",
   	type: 'GET',
 	}).done(function(products) {
 		allProducts = products;
@@ -540,13 +566,16 @@ function checkout(e){
 		}
 
 		$(window).on("scroll", function(){
+
 			// Distance from section to top
 			var x = $(".contentsection.story").offset().top;
+
 			// Height of section
 			var z = $(".contentsection.story").height();
 
 			// Distance scrolled from top
 			var y = $(window).scrollTop();
+
 			var actotal = Math.round(x+z);
 			var acdifference = Math.round(z-x);
 
