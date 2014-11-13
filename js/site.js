@@ -115,8 +115,8 @@ function placeOrder(e){
 
   $.ajax({
 	  type: 'post',
-	  // url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
-	  url: "http://localhost:3000/orders",
+	  url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  // url: "http://localhost:3000/orders",
 	  dataType: "json",
 	  data: cart
 	})
@@ -197,8 +197,8 @@ function checkout(e){
 
 	// GET products
 	$.ajax({
-  	// url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
-  	url: "http://localhost:3000/products",
+  	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	// url: "http://localhost:3000/products",
   	type: 'GET',
 	}).done(function(products) {
 		allProducts = products;
