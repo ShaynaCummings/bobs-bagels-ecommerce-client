@@ -1621,3 +1621,7 @@ margin: 20px 0;
 	font-size: 14px;
 	width: 350px;
 }
+
+.order-total {
+	text-align:center;
+}
