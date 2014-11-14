@@ -1,57 +1,270 @@
-var sampleOrder = {
-  lineitems:[
+// What the server expects as input for an order
+//
+// var sampleOrder = {
+//   lineitems:[
 
-    {
-      lineitem: {
-        product_id: 4,
-        combined_price: 6
-      },
-      lineitem_options: [14, 2, 7, 15]
+//     {
+//       lineitem: {
+//         product_id: 4,
+//         combined_price: 6
+//       },
+//       lineitem_options: [14, 2, 7, 15]
+//     },
+
+//     {
+//       lineitem: {
+//         product_id: 10,
+//         combined_price: 3.5
+//       },
+//       lineitem_options: [45]
+//     }
+//   ],
+//   order_info:{
+//     status: 'pending',
+//     street_address: '50 Melcher Street',
+//     city: 'Boston',
+//     state: 'MA',
+//     zip_code: '02210',
+//     delivery_price: 6,
+//     order_total: 15.5
+//   }
+// 	 stripe: 'stripetoken'
+// };
+
+// to save all products from server
+var allProducts = {};
+
+// to save cart
+var cart = {
+	lineitems: [],
+	order_info:{}
+};
+
+function emptyCart(){
+	cart = {
+		lineitems: [],
+		order_info:{}
+	};
+}
+
+
+function addToCart(e){
+	e.preventDefault();
+
+	var productId = $(this).closest('.menuitem').find('.product-title').data('product-id');
+	var combinedPrice = $(this).closest('.menuitem').find('.price').text();
+	var $checkedOptions = $(this).siblings().find('.checked');
+
+	var optionIdsArray = $checkedOptions.map(function(){
+     return $.trim($(this).attr('value'));
+  }).get();;
+
+	var newLineitem = {
+		lineitem: {
+      product_id: productId,
+      combined_price: combinedPrice
     },
+    lineitem_options: optionIdsArray
+	};
 
-    {
-      lineitem: {
-        product_id: 10,
-        combined_price: 3.5
-      },
-      lineitem_options: [45]
-    }
-  ],
-  order_info:{
+	cart.lineitems.push(newLineitem)
+
+	updateVisibleCart(newLineitem);
+
+	updateOrderTotal(combinedPrice);
+
+}
+
+function updateOrderTotal(price){
+
+
+	if( $('.order-total').length === 0 ){
+		cart.order_info.order_total = 0
+		$('<div>').addClass('order-total').insertAfter('.checkout');
+	}
+	cart.order_info.order_total += parseFloat(price);
+	$('.order-total').text("Current Total: $" + cart.order_info.order_total);
+}
+
+function getProduct(item){
+	var productId = item.lineitem.product_id;
+
+	var product = allProducts.filter(function( product ) {
+	  return product.id == productId;
+	});
+	return product[0];
+}
+
+function getOption(product, optionId){
+	var option = product.options.filter(function( option ) {
+	  return option.id == optionId;
+	});
+	return option[0];
+}
+
+function updateVisibleCart(item){
+
+	// create cart if it doesn't already exist
+	if ( $(".visible-cart").length === 0 ) {
+  	cartContainer = $('<div>').addClass('visible-cart').prependTo('div #menu');
+  	$('<h2>').text("Your Cart").appendTo(cartContainer);
+  	$('<a>').attr('href', "#").addClass('checkout button').text("Checkout").appendTo('.visible-cart');
+	}
+
+	var product = getProduct(item);
+
+	var lineItemContainer = $('<div>').addClass('vc-line-item').insertBefore('.checkout');
+	$('<div>').addClass('vc-line-item-name').html(product.name).appendTo(lineItemContainer);
+	$('<span>').addClass('vc-line-item-price').text("$ " + product.price).appendTo(lineItemContainer.find('.vc-line-item-name'));
+	$('<div>').addClass('vc-line-item-options').text("Options:").appendTo(lineItemContainer);
+	$('<ul>').appendTo(lineItemContainer.find('.vc-line-item-options'));
+	$.each(item.lineitem_options, function(index, optionId){
+		var option = getOption(product, optionId);
+		$('<li>').text(option.name).appendTo(lineItemContainer.find('.vc-line-item-options ul'));
+	});
+
+}
+
+function stripeResponseHandler(status, response){
+
+	if (response.error) {
+    // Show the errors on the form
+  } else {
+    cart.stripe = response.id;
+    // Insert the token into the form so it gets submitted to the server
+  }
+}
+
+function placeOrder(e){
+	e.preventDefault();
+
+	cart.order_info = {
     status: 'pending',
-    street_address: '50 Melcher Street',
-    city: 'Boston',
-    state: 'MA',
-    zip_code: '02210',
+    street_address: $('.street-address').val(),
+    city: $('.city').val(),
+    state: $('.state').val(),
+    zip_code: $('.zip-code').val(),
     delivery_price: 6,
     order_total: 15.5
   }
-};
+
+  Stripe.card.createToken({
+	  number: $('.card-number').val(),
+	  cvc: $('.card-cvc').val(),
+	  exp_month: $('.card-expiry-month').val(),
+	  exp_year: $('.card-expiry-year').val()
+	}, stripeResponseHandler);
+
+
+  $.ajax({
+	  type: 'post',
+	  url: "http://bobs-bagels-ecommerce.herokuapp.com/orders",
+	  // url: "http://localhost:3000/orders",
+	  dataType: "json",
+	  data: cart
+	})
+  .done(function(data){
+  	toggleCheckoutPopup();
+  	// emptyCart();
+  	alert("Thank you! Your order was placed.");
+  });
+}
+
+function toggleCheckoutPopup(){
+	$('.black-overlay').toggle();
+	$('.checkout-popup').toggle();
+}
+
+
+function checkout(e){
+	e.preventDefault();
+
+	//create checkout if it doesnt exist
+	if ( $(".checkout-popup").length === 0 ){
+
+		// create container
+		$('<div>').addClass('black-overlay').prependTo('#allconent');
+		$('<div>').addClass('checkout-popup').prependTo('#allconent');
+		$('<img>').attr('src', 'images/x-button.png').addClass('x-button').prependTo('.checkout-popup');
+
+		// delivery form
+		$('<h3>').text('Delivery Information').appendTo('.checkout-popup')
+		$('<label>').text('Street Address: ').appendTo('.checkout-popup');
+		$('<input>').addClass('street-address').appendTo('.checkout-popup');
+		$('<label>').text('City: ').appendTo('.checkout-popup');
+		$('<input>').addClass('city').appendTo('.checkout-popup');
+		$('<label>').text('State: ').appendTo('.checkout-popup');
+		$('<input>').addClass('state').appendTo('.checkout-popup');
+		$('<label>').text('Zip Code: ').appendTo('.checkout-popup');
+		$('<input>').addClass('zip-code').appendTo('.checkout-popup');
+
+		// credit card form
+		$('<h3>').text('Credit Card Information').appendTo('.checkout-popup')
+		$('<label>').text('Card Number: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-number').appendTo('.checkout-popup');
+		$('<label>').text('CVC: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-cvc').appendTo('.checkout-popup');
+		$('<label>').text('Expiration Month: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-expiry-month').appendTo('.checkout-popup');
+		$('<label>').text('Expiration Year: ').appendTo('.checkout-popup');
+		$('<input>').addClass('card-expiry-year').appendTo('.checkout-popup');
+
+		// place order button
+		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
+
+		Stripe.setPublishableKey('pk_test_WtQkmBDpvOCFbkI6Bq3p3i6F');
+	}
+
+	toggleCheckoutPopup();
+
+}
 
 (function($) {
+	//Goes to Log In
+	$('#log_in_button').on('click', function(){
+		alert("Log In");
+	});
+
+	// checkout button listener
+	$('.content').on('click', '.checkout', checkout);
+
+	// checkout x-button (close) listener
+	$('#allconent').on('click', '.x-button', toggleCheckoutPopup);
+
+	// place order button listener
+	$('#allconent').on('click', '.place-order', placeOrder);
 
 	// toggles display of options menu for each product
-	$('.content').on('click', 'h3', function(){
+	$('.content').on('click', '.product-title', function(){
 		$(this).parent('.menuitem').find('.options-toggle').slideToggle();
 	});
 
 	// toggles selection of checkboxes
 	$(".content").on('click', '.options-checkbox', function() {
       $(this).find("input").toggleClass("checked");
+      $(this).toggleClass("checked");
   });
 
   // toggles selection of radio buttons
   $(".content").on('click', '.options-radio', function() {
     $(this).parent(".options-toggle").children(".options-radio").find('input').removeClass('checked');
     $(this).find("input").addClass("checked");
+
+    $(this).parent(".options-toggle").children(".options-radio").removeClass('checked');
+    $(this).toggleClass("checked");
   });
+
+  // listens 'add to cart' button and adds line item to cart
+
+  $(".content").on('click', '.add-to-cart', addToCart);
 
 	// GET products
 	$.ajax({
   	url: 'https://bobs-bagels-ecommerce.herokuapp.com/products',
+  	// url: "http://localhost:3000/products",
   	type: 'GET',
 	}).done(function(products) {
-
+		allProducts = products;
 		// temp stores Sandwiches
     var sandwiches = $.grep(products, function(product){
     	return (product.category.name == 'Sandwiches');
@@ -69,8 +282,16 @@ var sampleOrder = {
 
     // creates Sandwich DOM elements
     $.each(sandwiches, function(index, sandwich){
-    	var itemProperties = $('<h3>').text(sandwich.name).append($('<p>').addClass('description').text(sandwich.description).append($('<p>').addClass('price').text(sandwich.price)));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#sandwiches');
+    	var itemProperties = $('<h3>').text(sandwich.name).after($('<p>').addClass('description').text(sandwich.description).after($('<p>').addClass('price').text(sandwich.price)));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', sandwich.id.toString()).html(
+    					itemProperties
+  					)
+    			)
+    		)
+    	).appendTo('#sandwiches');
     	// creates option DOM items
     	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(sandwich.options, function(index, option){
@@ -83,13 +304,22 @@ var sampleOrder = {
     		$('<label>').html(option.name + " <em>(add $" + option.price + ")</em>").appendTo(optionsList);
     	});
     	// creates 'add to cart' button
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
 
     // creates Beverage DOM elements
     $.each(beverages, function(index, beverage){
-    	var itemProperties = $('<h3>').text(beverage.name).append($('<p>').addClass('price').text(beverage.price));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#beverages');
+    	var itemProperties = $('<h3>').text(beverage.name).after($('<p>').addClass('price').text(beverage.price));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', beverage.id.toString()).html(
+    					itemProperties
+  					)
+    			)
+    		)
+    	).appendTo('#beverages');
+
     	// creates option DOM items
     	var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
     	$.each(beverage.options, function(index, option){
@@ -99,13 +329,21 @@ var sampleOrder = {
     	});
     	// creates 'add to cart' button
     	var lastOptionChild = $(container).find('.menuitem')
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
 
     // creates Catering DOM elements
     $.each(cateringItems, function(index, cateringItem){
-    	var itemProperties = $('<h3>').text(cateringItem.name).append($('<p>').addClass('description').text(cateringItem.description).append($('<p>').addClass('price').text(cateringItem.price)));
-    	var container = $('<div>').addClass('cols clearfix').html($('<div>').addClass('col1').html($('<div>').addClass('menuitem').html(itemProperties))).appendTo('#cateringItems');
+    	var itemProperties = $('<h3>').text(cateringItem.name).after($('<p>').addClass('description').text(cateringItem.description).after($('<p>').addClass('price').text(cateringItem.price)));
+    	var container = $('<div>').addClass('cols clearfix').html(
+    		$('<div>').addClass('col1').html(
+    			$('<div>').addClass('menuitem').html(
+    				$('<div>').addClass('product-title').attr('data-product-id', cateringItem.id.toString()).html(
+    					itemProperties
+  					)
+  				)
+  			)
+  		).appendTo('#cateringItems');
 	    // creates option DOM items
 	    var optionsToggle = $('<div>').addClass('options-toggle').appendTo(container.find('.menuitem'))
 	    $.each(cateringItem.options, function(index, option){
@@ -115,7 +353,7 @@ var sampleOrder = {
 	  	});
 	  	// creates 'add to cart' button
     	var lastOptionChild = $(container).find('.menuitem')
-    	$('<button>').addClass('add-to-cart').text("Add to cart").appendTo(optionsToggle);
+    	$('<a>').attr('href', "#").addClass('add-to-cart button').text("Add to cart").appendTo(optionsToggle);
     });
   });
 
@@ -332,13 +570,16 @@ var sampleOrder = {
 		}
 
 		$(window).on("scroll", function(){
+
 			// Distance from section to top
 			var x = $(".contentsection.story").offset().top;
+
 			// Height of section
 			var z = $(".contentsection.story").height();
 
 			// Distance scrolled from top
 			var y = $(window).scrollTop();
+
 			var actotal = Math.round(x+z);
 			var acdifference = Math.round(z-x);
 
