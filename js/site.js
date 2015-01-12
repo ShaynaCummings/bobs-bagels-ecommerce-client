@@ -145,7 +145,7 @@ function placeOrder(e){
     state: $('.state').val(),
     zip_code: $('.zip-code').val(),
     delivery_price: 6,
-    order_total: cart.order_info.order_total
+    order_total: order_total
   }
 
   Stripe.card.createToken({
@@ -193,21 +193,21 @@ function checkout(e){
 		$('<input>').addClass('street-address').appendTo('.checkout-popup');
 		$('<label>').text('City: ').appendTo('.checkout-popup');
 		$('<input>').addClass('city').appendTo('.checkout-popup');
-		$('<label>').text('State: ').appendTo('.checkout-popup');
+		$('<label value="MA">').text('State: ').appendTo('.checkout-popup');
 		$('<input>').addClass('state').appendTo('.checkout-popup');
 		$('<label>').text('Zip Code: ').appendTo('.checkout-popup');
 		$('<input>').addClass('zip-code').appendTo('.checkout-popup');
 
 		// credit card form
-		$('<h3>').text('Credit Card Information').appendTo('.checkout-popup')
+		$('<h3>').text('Sample Credit Card Information').appendTo('.checkout-popup')
 		$('<label>').text('Card Number: ').appendTo('.checkout-popup');
-		$('<input>').addClass('card-number').appendTo('.checkout-popup');
+		$('<input value="4242 4242 4242 4242">').addClass('card-number').appendTo('.checkout-popup');
 		$('<label>').text('CVC: ').appendTo('.checkout-popup');
-		$('<input>').addClass('card-cvc').appendTo('.checkout-popup');
+		$('<input value="244">').addClass('card-cvc').appendTo('.checkout-popup');
 		$('<label>').text('Expiration Month: ').appendTo('.checkout-popup');
-		$('<input>').addClass('card-expiry-month').appendTo('.checkout-popup');
+		$('<input value="02">').addClass('card-expiry-month').appendTo('.checkout-popup');
 		$('<label>').text('Expiration Year: ').appendTo('.checkout-popup');
-		$('<input>').addClass('card-expiry-year').appendTo('.checkout-popup');
+		$('<input value="2018">').addClass('card-expiry-year').appendTo('.checkout-popup');
 
 		// place order button
 		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
@@ -533,7 +533,7 @@ function checkout(e){
 			map = new google.maps.Map(document.getElementsByClassName('ironmap')[0], mapOptions);
 			map.setOptions({styles: styles});
 
-			var locInfo = '<h1>Bob\'s Bagels</h1>'
+			var locInfo = 'Bob\'s Bagels'
 			var infowindow = new google.maps.InfoWindow({
       	content: locInfo,
   		});
@@ -543,7 +543,7 @@ function checkout(e){
 				map:map,
 				draggable:true,
 				icon: bagelPic,
-				title: 'Bob\'s Bagels',
+				title: locInfo,
 				animation: google.maps.Animation.DROP,
 				position: new google.maps.LatLng($(".ironmap").data("lat"), $(".ironmap").data("long")),
 			});
