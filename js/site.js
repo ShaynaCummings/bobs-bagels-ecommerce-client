@@ -145,7 +145,7 @@ function placeOrder(e){
     state: $('.state').val(),
     zip_code: $('.zip-code').val(),
     delivery_price: 6,
-    order_total: 15.5
+    order_total: cart.order_info.order_total
   }
 
   Stripe.card.createToken({
@@ -212,7 +212,7 @@ function checkout(e){
 		// place order button
 		$('<a>').attr('href', "#").addClass('place-order button').text("Place Order").appendTo('.checkout-popup');
 
-		Stripe.setPublishableKey('pk_test_WtQkmBDpvOCFbkI6Bq3p3i6F');
+		Stripe.setPublishableKey('pk_test_eGJzOS49KR7tvmLiHOm0SEhz');
 	}
 
 	toggleCheckoutPopup();

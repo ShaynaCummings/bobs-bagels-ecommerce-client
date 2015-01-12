@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1">
+
 		<title>Bob's Bagels - A test project built with Ruby on Rails and Javascript</title>
+
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Bree+Serif|Shadows+Into+Light|Kaushan+Script' rel='stylesheet' type='text/css'>
+
 		<link rel="stylesheet" href="css/flexslider.css" type="text/css">
 		<link rel="stylesheet" href="css/styles.css" type="text/css">
 		<link rel="stylesheet" href="css/layout.css" type="text/css">
 		<link rel="stylesheet" href="css/demo.css" type="text/css">
 		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+		<!-- Favicon -->
+  	<link rel="icon" href="favicon.ico">
+
 	</head>
+
 	<body class="sunfire">
 		<a id="Top"></a>
 		<div id="nav">
@@ -23,12 +32,7 @@
 					<li><a class="ironanchor" href="#Locations">Location</a></li>
 					<li><a class="ironanchor" href="#Story">About</a></li>
 					<li><a class="ironanchor" href="#Developers">Developers</a></li>
-					<li><a id="log_in_button" class="ironanchor" href="#login">Log In</a></li>
-					<!-- <li><div id="user-login"><form action="" method="post">
-    <p>Username: <input type="text" name="username"></p>
-    <p>Password: <input type="password" name="password"></p>
-    <p><input type="submit" name="submit"></p>
-</form></div></li> -->
+
 				</ul>
 			</div>
 		</div>
@@ -95,8 +99,6 @@
 
 							<p><strong>$6</strong> | Boston: Downtown, Southie, North End, South End</p>
 							<p><strong>$10</strong> | Brookline, Allston, Cambridge, Somerville</p>
-							<p><i>Sorry, we are not able to offer delivery to other neighborhoods at this time.</i></p>
-							<p><a href="#" class="button">click to view zones</a></p>
 
 						</div>
 					</div>
@@ -124,7 +126,6 @@
 				<div class="content developers">
 					<h1>Meet The Devs</h1>
 					<p>Efficient and effective, our developers created this entire e-commerce platform in just five days!</p>
-					<p>They used Ruby on Rails as their back-end server, JavaScript and jQuery/AJAX for the front-end client, and the Stripe API for accepting credit cards.</p>
 					<h2>The Team</h2>
 
 					<div class="team-member">
@@ -142,6 +143,7 @@
 						<h3> Shayna Cummings</h3>
 						<p>Shayna likes coding, coffee, Canada, and cats.</p>
 						<div class="list-group">
+							<a class="list-group-item" target="_blank" href="http://shaynacummings.com"><i class="fa fa-globe fa-fw"></i>&nbsp;Portfolio</a>
 						  <a class="list-group-item" target="_blank" href="http://twitter.com/shaynacummings"><i class="fa fa-twitter fa-fw"></i></a>
 						  <a class="list-group-item" target="_blank" href="http://www.linkedin.com/in/shaynacummings/"><i class="fa fa-linkedin fa-fw"></i></a>
 						  <a class="list-group-item" target="_blank" href="http://github.com/ShaynaCummings"><i class="fa fa-github fa-fw"></i></a>
@@ -150,7 +152,7 @@
 					</div>
 					<div class="team-member">
 						<h3> Avi Reddy</h3>
-						<p>Avi is a full-stack developer from New York.</p>
+						<p>Avi is a developer from New York.</p>
 						<div class="list-group">
 						  <a class="list-group-item" target="_blank" href="https://www.linkedin.com/pub/avinash-reddy/a1/236/b1b"><i class="fa fa-linkedin fa-fw"></i></a>
 						  <a class="list-group-item" target="_blank" href="http://github.com/AReddy14"><i class="fa fa-github fa-fw"></i></a>
@@ -179,7 +181,7 @@
 			</div>
 			<div id="footer">
 				<div id="footercontent">
-					<p class="copyright">Built with <i class="fa fa-heart"></i> in Boston</p>
+					<p class="copyright">Built with <i class="fa fa-heart"></i> in Boston. This site is for demonstration purposes only.</p>
 				</div>
 			</div>
 		</div>
@@ -192,7 +194,7 @@
 		<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 		<script type="text/javascript">
   	// This identifies your website in the createToken call below
-  	Stripe.setPublishableKey('pk_test_JqE1qOYpQpqC0RFL4YBOblmG');
+  	Stripe.setPublishableKey('pk_test_eGJzOS49KR7tvmLiHOm0SEhz');
 		</script>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXiTK0eltHjARh5QZxmR8C32XPn20KZds&amp;sensor=false"></script>
 		<script src="js/site.js"></script>
